@@ -8,12 +8,13 @@ namespace MTCG.Models
 {
     internal class MonsterCard : Card
     {
-        public MonsterCard(ElementType type, CardType name, int damage)
+        public MonsterCard(ElementType type, CardType name, int damage, string id)
         {   
-            Element = type;
+            Element = getElement(name);
             Name = name;    
             Damage = damage;
             checkCard(type, name, damage);
+            Id = id;
             
         }
         //Methode welche die Parameter beim MonsterCard Konstruktor überprüft und falsche Element typen richtig stellt

@@ -8,13 +8,13 @@ namespace MTCG.Models
 {
     internal class Battlefield
     {
-        public User Player1;
-        public User Player2;
+        private User _player1;
+        private User _player2;
 
         public Battlefield(User player1, User player2)
         {
-            Player1 = player1;
-            Player2 = player2;
+            _player1 = player1;
+            _player2 = player2;
         }
 
         public User? Fight(User player1, User player2)
@@ -127,8 +127,8 @@ namespace MTCG.Models
 
         public void elementInfluencedF(User player1, User player2, Card card1, Card card2)
         {
-            int damage1 = card1.Damage;
-            int damage2 = card2.Damage;
+            float damage1 = card1.Damage;
+            float damage2 = card2.Damage;
             //Bedingungen die card1 Damage verdoppeln und card2 Damage halbiert
             //Water vs Fire || Fire vs Normal || Normal vs Water
             if( (card1.Element is ElementType.Water) && (card2.Element is ElementType.Fire) ||

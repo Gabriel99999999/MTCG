@@ -10,7 +10,7 @@ namespace MTCG.Models
     {
         public string Username { get; private set; }
         public string Password { get; private set; }
-        public string Token => $"{Username}-msgToken";
+        public string token => $"{Username}-msgToken";
 
         public List<Card> Stack { get; set; }
         public List<Card> Deck { get; set; }
