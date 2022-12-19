@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iWpYUh36YQn6JlyDQ2MdNrALPNXdelFAtSHHK5C8wsQ3yOJUQzsG1VjgRf/G/qtz9XP6uxF4MXakx5fD8ZC2AQ==",
+  "dgSpecHash": "PHMOY47H9tnHm6nUgXkk8f+drEAIyWnWGSoqvy5HIJHKH0pfcfRL3zYQhVbPlKKNzhYn7qVc41vi7YNBMlQYWA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame2\\MTCG-Server\\MTCG-Server.Core\\MTCG-Server.Core.csproj",
+  "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Core\\MTCGServer.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

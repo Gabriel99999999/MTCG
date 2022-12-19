@@ -1,0 +1,1 @@
+evtl ein bool bei einer karte wo drinnen steht ob sie durch irgendetwas blockiert wurde zb weil sie im store liegt

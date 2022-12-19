@@ -1,7 +1,8 @@
-﻿namespace MTCG.Models
+﻿namespace MTCGServer.Models
 {
     internal abstract class Card
     {
+        public bool Fightable { get; set; }
         public  ElementType Element { get; set; }
         public CardType Name { get; set; }
         public float Damage { get; set; }
@@ -13,6 +14,7 @@
             Name = Enum.Parse<CardType> (name);
             Damage = damage;
             Element = getElementOutOfName(Name);
+            Fightable = true;
 
         }
         private ElementType getElementOutOfName(CardType name)

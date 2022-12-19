@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "XoIH1PLbuDU3F3hT7tT7Rf7+8fuwW8VzIlmOfDWZwKUeKGbJk4pVamHDjQHd2tEfpQ7XXkzUPa5Qu8yVofnoGQ==",
+  "dgSpecHash": "BsRytBaa4KI3dQos9yN34ZaGwCTaA42eKIIi4nxMV9C0ggLY3kBGh/p4nGh51yAU3/8ewhuKNmVr4Shf8V8Odw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame2\\MTCG-Server\\MTCG-Server\\MTCG-Server.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server\\MTCGServer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wiede\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

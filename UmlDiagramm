@@ -1,0 +1,57 @@
+@startuml name
+interface IShape{
+    void PrintShapeType()
+}
+interface IShapeCompositon
+interface IShapeMath{
+    double GetArea()
+    double GetPerimeter()
+}
+
+abstract class Shape{
+    # _x : int
+    # _y : int
+
+    + <<Create>> Shape(x : int, y : int)
+    + void ShowOrigin
+}
+class Circle{
+    - _radius : int
+
+    + <<Create>> Circle(x : int, y : int, radius : int)
+    + double GetArea()
+    + double GetPerimeter()
+    + void PrintShapeType()
+}
+class CompoundShape{
+    - _shapeList : List<IShapeComposition>
+    + Count : int
+
+    + <<Create>> CompoundShape(x : int, y : int)
+    + double GetArea()
+    + double GetPerimeter()
+    + void PrintShapeType()
+    + void Clear()
+}
+class Line{
+    - _x2 : int
+    - _y2 : int
+
+    + <<Create>> Line(x1 : int, y1 : int, x2 : int, y2 : int)
+    + double GetArea()
+    + double GetPerimeter()
+    + void PrintShapeType()
+}
+
+IShape <|-- IShapeCompositon
+IShapeMath <|-- IShapeCompositon
+
+Shape <|-- CompoundShape
+IShapeCompositon <|-- CompoundShape
+
+Shape <|-- Circle
+IShapeCompositon <|-- Circle
+
+Shape <|-- Line
+IShapeCompositon <|-- Line
+@enduml

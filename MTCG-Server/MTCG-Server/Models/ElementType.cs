@@ -1,4 +1,4 @@
-﻿namespace MTCG.Models
+﻿namespace MTCGServer.Models
 {
     public enum ElementType
     {

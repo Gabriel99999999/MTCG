@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame2\\MTCG-Server\\MTCG-Server.Core\\MTCG-Server.Core.csproj",
-      "projectName": "MTCG-Server.Core",
-      "projectPath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame2\\MTCG-Server\\MTCG-Server.Core\\MTCG-Server.Core.csproj",
+      "projectUniqueName": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Core\\MTCGServer.Core.csproj",
+      "projectName": "MTCGServer.Core",
+      "projectPath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Core\\MTCGServer.Core.csproj",
       "packagesPath": "C:\\Users\\wiede\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame2\\MTCG-Server\\MTCG-Server.Core\\obj\\",
+      "outputPath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\wiede\\AppData\\Roaming\\NuGet\\NuGet.Config",

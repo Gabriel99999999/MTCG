@@ -2,9 +2,13 @@
 
 3.12.2022 4h angefangen zu programmieren und uml Diagram bissi abgeändert
 
-4.12.2022 5h battle logik und alles drum herum
+4.12.2022 5h battle logik und die Karten
 
 5.12.2022 7:30 - 10:00 battle logik fast fertig
 
-16.12.2022 8:40 - 9:30 Code so anpassen das es er mit diesen Parametern funktioniert die auch dann an den Server übergeben werden
-16.12.2022 9:30 - 12:00 komplettes Projekt neue erstellen und alte Code teile hinzufügen weil ich daran gescheitert bin neue Projekte zu meinem bestehenden Projekt hinzuzufügen
+17.12.2022 8:40 - 9:30 Code so anpassen das es er mit diesen Parametern funktioniert die auch dann an den Server übergeben werden
+17.12.2022 9:30 - 12:00 komplettes Projekt neue erstellen und alte Code teile hinzufügen weil ich daran gescheitert bin neue Projekte zu meinem bestehenden Projekt hinzuzufügen
+17.12.2022 12:00 - 16:00 hab ich am Trading und dem Store gearbeitet
+17.12.2022 16:00 - 18:00 habe ich mir den Massager Server aus der Präsenseinheit angeschaut
+
+19.12.2022 9:00-12:00 Trading fast fertig und store fast fertig 
