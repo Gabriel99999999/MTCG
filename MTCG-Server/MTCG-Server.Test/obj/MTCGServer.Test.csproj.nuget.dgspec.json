@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server\\MTCGServer.csproj": {
+                "projectPath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server\\MTCGServer.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -187,6 +191,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.2, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.1, )"
             }
           },
           "imports": [

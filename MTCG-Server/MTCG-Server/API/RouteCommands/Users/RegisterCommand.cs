@@ -1,12 +1,12 @@
 ﻿
-//using MTCGServer.BLL;
+using MTCGServer.BLL;
 using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using MTCGServer.Models;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
-    internal class RegisterCommand : IRouteCommand
+    internal class RegisterCommand : ICommand
     {
         private readonly Credentials _credentials;
         private readonly IUserManager _userManager;
@@ -24,7 +24,6 @@ namespace MTCGServer.API.RouteCommands.Users
             {
                 _userManager.RegisterUser(_credentials);
                 response.StatusCode = StatusCode.Created;
-                response.Payload = "das ist ein payload";
             }
             catch(DuplicateUserException)
             {

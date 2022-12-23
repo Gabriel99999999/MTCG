@@ -1,4 +1,5 @@
-﻿using MTCGServer.Core.Response;
+﻿using MTCGServer.BLL;
+using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using System.Net;
 using System.Net.Sockets;
@@ -45,19 +46,68 @@ namespace MTCGServer.Core.Server
                 }
                 else
                 {
-                    var command = _router.Resolve(request);
-                    if (command != null)
+                    try
                     {
-                        // found a command for this request, now execute it
-                        response = command.Execute();
-                    }
-                    else
-                    {
-                        // could not find a matching command for the request
-                        response = new Response.Response()
+                        var command = _router.Resolve(request);
+                        if (command != null)
                         {
-                            StatusCode = StatusCode.BadRequest
-                        };
+                            // found a command for this request, now execute it
+                            response = command.Execute();
+                        }
+                        else
+                        {
+                            // could not find a matching command for the request
+                            response = new Response.Response()
+                            {
+                                StatusCode = StatusCode.BadRequest
+                            };
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        if (ex is UserNotFoundException)
+                        {
+                            response = new Response.Response()
+                            {
+                                StatusCode = StatusCode.NotFound
+                            };
+                        }
+                        else if(ex is InvalidOperationException)
+                        {
+                            response = new Response.Response()
+                            {
+                                //StatusCode = StatusCode.NotFound
+                            };
+                        }
+                        else if (ex is RouteNotAuthenticatedException)
+                        {
+                            response = new Response.Response()
+                            {
+                                //StatusCode = StatusCode.NotFound
+                            };
+                        }
+                        /*else if (ex is AccessTokenMissingException)
+                        {
+                            response = new Response.Response()
+                            {
+                                //StatusCode = StatusCode.NotFound
+                            };
+                        }*/
+                        else if (ex is NotImplementedException)
+                        {
+                            response = new Response.Response()
+                            {
+                                StatusCode = StatusCode.NotImplemented
+                            };
+                        }
+                        else if (ex is InvalidDataException)
+                        {
+                            response = new Response.Response()
+                            {
+                                //StatusCode = StatusCode.NotFound
+                            };
+                        }
+
                     }
 
                     // TODO: handle invalid data, route not authenticated

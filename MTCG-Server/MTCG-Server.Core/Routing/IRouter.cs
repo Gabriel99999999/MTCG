@@ -4,6 +4,6 @@ namespace MTCGServer.Core.Routing
 {
     public interface IRouter
     {
-        IRouteCommand? Resolve(Request.Request request);
+        ICommand? Resolve(Request.Request request);
     }
 }

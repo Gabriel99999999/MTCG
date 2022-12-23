@@ -1,11 +1,12 @@
 ﻿//using MTCGServer.BLL;
+using MTCGServer.BLL;
 using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using MTCGServer.Models;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
-    internal class LoginCommand : IRouteCommand
+    internal class LoginCommand : ICommand
     {
         private readonly IUserManager _userManager;
 

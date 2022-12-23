@@ -8,7 +8,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="BLL2\**" />
+	  <EmbeddedResource Remove="BLL2\**" />
+	  <None Remove="BLL2\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="DAL\DB.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Npgsql" Version="7.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

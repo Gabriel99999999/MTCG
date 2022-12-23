@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,24 +9,34 @@ namespace MTCGServer.Models
 {
     internal class User
     {
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string token => $"{Username}-msgToken";
-        public string Name { get; private set; }
-        public string Bio { get; private set; }
-        public string Image { get; private set; }
-
+        public Credentials Credentials { get; set; }
         public int Money { get; }
-
+        public ScoreboardData ScoreboardData { get; set; }
+        public string Token { get; set; }   
+        public UserData UserData { get; set; }
         public List<Card>? Stack { get; set; }
         public List<Card>? Deck { get; set; }
 
-        public User(string username, string password)
+        //Konstruktor für das neue erstellen eines Users
+        public User(Credentials credentials)
         {
-            Username = username;
-            Password = password;
+            Credentials = credentials;
+            UserData = new UserData();  
+            ScoreboardData = new ScoreboardData();
             Money = 20;
+            Token = String.Empty;
         }
+
+        //Konstruktor um aus den werten der datenbank den user anzulegen
+        public User(Credentials credentials, int money, UserData userdata, string token, ScoreboardData scoreboardData)
+        {
+            Credentials= credentials;
+            Money = money;
+            UserData = userdata;
+            Token = token;
+            ScoreboardData = scoreboardData;
+        }
+
 
     }
 }

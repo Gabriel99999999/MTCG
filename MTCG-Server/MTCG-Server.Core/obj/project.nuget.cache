@@ -1,8 +1,23 @@
 {
   "version": 2,
-  "dgSpecHash": "PHMOY47H9tnHm6nUgXkk8f+drEAIyWnWGSoqvy5HIJHKH0pfcfRL3zYQhVbPlKKNzhYn7qVc41vi7YNBMlQYWA==",
-  "success": true,
+  "dgSpecHash": "3sxr2ONqinCVBmZqC08EhB/VgRSq5BQDuHk2EBEYvDZogUpffeXd+fpgkH/jX19VhoM3CdtScD9UAOPvztfgMw==",
+  "success": false,
   "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Core\\MTCGServer.Core.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\wiede\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.0\\microsoft.extensions.logging.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\wiede\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
+    "C:\\Users\\wiede\\.nuget\\packages\\npgsql\\7.0.1\\npgsql.7.0.1.nupkg.sha512",
+    "C:\\Users\\wiede\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1108",
+      "level": "Error",
+      "message": "Zyklus erkannt. \r\n  MTCGServer.Core -> MTCGServer -> MTCGServer.Core.",
+      "libraryId": "MTCGServer.Core",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 ﻿namespace MTCGServer.Core.Routing
 {
-    public interface IRouteCommand
+    public interface ICommand
     {
         Response.Response Execute();
     }
