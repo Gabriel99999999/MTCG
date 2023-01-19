@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "xdyPeHIfZMvrSYNr4g9LXtnm682AcZYdWU4yVf5hXlaac+OKceS+PFPHKryDbeKQwA8YaDEWUDEukzA7o7rOkw==",
-  "success": false,
+  "dgSpecHash": "gYCDamIrenfgKXpIMvjnutz7cBAhDdCAJM0o3X2NeImnWpWOwPoWmUybQkotalJb6SGTiSbfAm1iPVsK35l/hQ==",
+  "success": true,
   "projectFilePath": "C:\\Users\\wiede\\Documents\\Fachhochschule\\3.Semester\\Software Engineering\\MonsterTradingCardGame\\MTCG-Server\\MTCG-Server.Test\\MTCGServer.Test.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\wiede\\.nuget\\packages\\castle.core\\5.1.0\\castle.core.5.1.0.nupkg.sha512",
@@ -24,15 +24,5 @@
     "C:\\Users\\wiede\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
     "C:\\Users\\wiede\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1108",
-      "level": "Error",
-      "message": "Zyklus erkannt. \r\n  MTCGServer.Test -> MTCGServer -> MTCGServer.Core -> MTCGServer.",
-      "libraryId": "MTCGServer",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    }
-  ]
+  "logs": []
 }

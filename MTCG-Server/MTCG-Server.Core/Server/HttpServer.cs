@@ -1,5 +1,4 @@
-﻿using MTCGServer.BLL;
-using MTCGServer.Core.Response;
+﻿using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using System.Net;
 using System.Net.Sockets;
@@ -34,78 +33,50 @@ namespace MTCGServer.Core.Server
                 var client = new HttpClient(connection);
 
                 var request = client.ReceiveRequest();
-                Response.Response response;
-
-                if (request == null)
+                Response.Response response = new Response.Response()
                 {
-                    // could not parse request
-                    response = new Response.Response()
-                    {
-                        StatusCode = StatusCode.BadRequest
-                    };
-                }
-                else
+                    StatusCode = StatusCode.BadRequest
+                };
+
+               
+                if(request != null)
                 {
                     try
                     {
                         var command = _router.Resolve(request);
                         if (command != null)
                         {
+                            Console.WriteLine("hier");
                             // found a command for this request, now execute it
                             response = command.Execute();
                         }
                         else
                         {
+                            Console.WriteLine("hier2");
                             // could not find a matching command for the request
-                            response = new Response.Response()
-                            {
-                                StatusCode = StatusCode.BadRequest
-                            };
                         }
                     }
                     catch(Exception ex)
                     {
-                        if (ex is UserNotFoundException)
+                        if (ex is NotFoundException)
                         {
-                            response = new Response.Response()
-                            {
-                                StatusCode = StatusCode.NotFound
-                            };
+                            response.StatusCode = StatusCode.NotFound;
                         }
                         else if(ex is InvalidOperationException)
                         {
-                            response = new Response.Response()
-                            {
-                                //StatusCode = StatusCode.NotFound
-                            };
+                            response.StatusCode = StatusCode.InternalServerError;
                         }
                         else if (ex is RouteNotAuthenticatedException)
                         {
-                            response = new Response.Response()
-                            {
-                                //StatusCode = StatusCode.NotFound
-                            };
+                            response.StatusCode = StatusCode.Unauthorized;
                         }
-                        /*else if (ex is AccessTokenMissingException)
-                        {
-                            response = new Response.Response()
-                            {
-                                //StatusCode = StatusCode.NotFound
-                            };
-                        }*/
                         else if (ex is NotImplementedException)
                         {
-                            response = new Response.Response()
-                            {
-                                StatusCode = StatusCode.NotImplemented
-                            };
+                            response.StatusCode = StatusCode.NotImplemented;
                         }
                         else if (ex is InvalidDataException)
                         {
-                            response = new Response.Response()
-                            {
-                                //StatusCode = StatusCode.NotFound
-                            };
+                            //response.StatusCode = StatusCode.BadRequest;
                         }
 
                     }

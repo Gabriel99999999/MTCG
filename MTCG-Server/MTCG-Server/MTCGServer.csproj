@@ -26,8 +26,4 @@
 		<ProjectReference Include="..\MTCG-Server.Core\MTCGServer.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="API\RouteCommands\Messages\" />
-	</ItemGroup>
-
 </Project>

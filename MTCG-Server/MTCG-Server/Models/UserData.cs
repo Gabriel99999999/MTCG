@@ -8,9 +8,9 @@ namespace MTCGServer.Models
 {
     internal class UserData
     {
-        public string Name { get; private set; }
-        public string Bio { get; private set; }
-        public string Image { get; private set; }
+        public string Name { get; set; }
+        public string Bio { get; set; }
+        public string Image { get; set; }
 
         //beim ersten mal anlegen von einem User
         public UserData()

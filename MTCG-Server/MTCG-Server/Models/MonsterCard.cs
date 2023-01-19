@@ -8,6 +8,6 @@ namespace MTCGServer.Models
 {
     internal class MonsterCard : Card
     {
-        public MonsterCard(string id, string name, float damage) : base(id, name, damage) { }
+        public MonsterCard(Guid id, string name, decimal damage) : base(id, name, damage) { }
     }
 }

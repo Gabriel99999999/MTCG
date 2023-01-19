@@ -17,3 +17,6 @@
 20.12.2022 9:00-12:00 und 13:00-16:00 und 16:00-19:30 logik um den user einzuloggen und zu registrieren mit Datenbank anbindung fertig 
 22.12.2022 8:00-12:00 arbeitete ich an den anderen User funktionen 
 23.12.2022 00:00 - 6:00 die anderen User funktionen fertig gestellt JETZT FEHLT nur noch PUT Users
+17.01.2023 9:00 - 13:00 
+17.01.2023 21:00 - 24:00
+18.01.2023 00:00-4:40

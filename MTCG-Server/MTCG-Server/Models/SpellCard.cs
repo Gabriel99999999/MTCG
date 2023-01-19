@@ -8,6 +8,6 @@ namespace MTCGServer.Models
 {
     internal class SpellCard : Card
     {
-        public SpellCard(string id, string name, float damage) : base(id, name, damage) { }
+        public SpellCard(Guid id, string name, decimal damage) : base(id, name, damage) { }
     }
 }

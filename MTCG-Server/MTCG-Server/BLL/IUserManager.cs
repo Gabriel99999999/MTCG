@@ -10,11 +10,12 @@ namespace MTCGServer.BLL
 {
     internal interface IUserManager
     {
-        User LoginUser(Credentials credentials);
-        void RegisterUser(Credentials credentials);
-        User GetUserByAuthToken(string authToken);
+        User? LoginUser(Credentials credentials);
+        bool RegisterUser(Credentials credentials);
+        User? GetUserByAuthToken(string authToken);
         string? GetTokenOfUsername(string username);
-
         UserData? GetUserData(string username);
+        bool ExistUser(string username);
+        bool UpdateUserData(UserData userData, string username);
     }
 }

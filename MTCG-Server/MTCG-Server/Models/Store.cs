@@ -39,7 +39,7 @@ namespace MTCGServer.Models
         }
         public void addTrade(Trade trade)
         {
-            Trade existingTrade = null;
+            Trade? existingTrade = null;
             //check if this trade already exists
             existingTrade = _currentTrades.FirstOrDefault(x => x.Id == trade.Id);
             
@@ -53,10 +53,10 @@ namespace MTCGServer.Models
                 //Trade already exist 409
             }
         }
-        public void deleteTrade(string tradeId, User player) 
+        public void deleteTrade(Guid tradeId, User player) 
         {
             //search for this trade
-            Trade foundTrade = null;
+            Trade? foundTrade = null;
             foundTrade = _currentTrades.FirstOrDefault(x => x.Id == tradeId);
 
             if (foundTrade is null) 
@@ -66,7 +66,7 @@ namespace MTCGServer.Models
             //check ob die Karte um die es im Trade geht auch dem user gehört
             else
             {
-                string id = foundTrade.CardToTrade;
+                Guid id = foundTrade.CardToTrade;
                 Card? foundCard = null;
                 foundCard = player.Stack.FirstOrDefault(x => x.Id == id);
                 if(foundCard is null)
@@ -95,7 +95,7 @@ namespace MTCGServer.Models
                     if (player.Money >= package.Price)
                     {
                          _currentPackages.RemoveAt(0);
-                        foreach(Card card in package.PackageToBuy)
+                        foreach(Card card in package.PackageOfCards)
                         {
                             player.Stack.Add(card);
                         }

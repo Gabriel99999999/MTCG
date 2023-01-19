@@ -1,5 +1,6 @@
 ﻿
 using MTCGServer.BLL;
+using MTCGServer.BLL.Exceptions;
 using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using MTCGServer.Models;
@@ -22,12 +23,21 @@ namespace MTCGServer.API.RouteCommands.Users
             var response = new Response();
             try
             {
-                _userManager.RegisterUser(_credentials);
-                response.StatusCode = StatusCode.Created;
+                if (_userManager.RegisterUser(_credentials))
+                {
+                    response.StatusCode = StatusCode.Created;
+                }              
             }
-            catch(DuplicateUserException)
+            catch(Exception ex)
             {
-                response.StatusCode = StatusCode.Conflict;
+                if(ex is DuplicateDataException)
+                {
+                    response.StatusCode = StatusCode.Conflict;
+                }
+                if(ex is DataAccessException)
+                {
+                    response.StatusCode = StatusCode.InternalServerError;
+                }
             }
             return response;
         }

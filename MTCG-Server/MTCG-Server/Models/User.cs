@@ -14,8 +14,8 @@ namespace MTCGServer.Models
         public ScoreboardData ScoreboardData { get; set; }
         public string Token { get; set; }   
         public UserData UserData { get; set; }
-        public List<Card>? Stack { get; set; }
-        public List<Card>? Deck { get; set; }
+        public List<Card> Stack { get; set; } = new List<Card>();
+        public List<Card> Deck { get; set; } = new List<Card>();
 
         //Konstruktor für das neue erstellen eines Users
         public User(Credentials credentials)

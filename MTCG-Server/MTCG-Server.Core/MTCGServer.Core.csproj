@@ -6,8 +6,8 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 		<ProjectReference Include="..\MTCG-Server\MTCGServer.csproj" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>

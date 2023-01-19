@@ -1,5 +1,6 @@
 ﻿using MTCGServer.BLL;
 using MTCGServer.Core.Request;
+using MTCGServer.Core.Routing;
 using MTCGServer.Models;
 using System;
 using System.Collections.Generic;
@@ -23,50 +24,17 @@ namespace MTCGServer.API.RouteCommands
         {
             User? currentUser = null;
 
+            //wenn im dictionary "Header" ein value paar mit key "Authoriazation steht dann speicher ich den anderen wert in authToken
             if (request.Header.TryGetValue("Authorization", out var authToken))
             {
                 const string prefix = "Bearer ";
                 if (authToken.StartsWith(prefix))
                 {
-                    try
-                    {
-                        currentUser = _userManager.GetUserByAuthToken(authToken.Substring(prefix.Length));
-                    }
-                    catch(UserNotFoundException) {
-                        throw;
-                    }
+                    currentUser = _userManager.GetUserByAuthToken(authToken.Substring(prefix.Length));
                 }
-                else
-                {
-                    throw new AccessTokenMissingException();
-                }
-            }
-            else
-            {
-                throw new AccessTokenMissingException();
             }
 
             return currentUser;
-        }
-    }
-
-    [Serializable]
-    public class AccessTokenMissingException : Exception
-    {
-        public AccessTokenMissingException()
-        {
-        }
-
-        public AccessTokenMissingException(string? message) : base(message)
-        {
-        }
-
-        public AccessTokenMissingException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected AccessTokenMissingException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
         }
     }
 }

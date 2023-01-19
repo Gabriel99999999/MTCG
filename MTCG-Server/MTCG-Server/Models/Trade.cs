@@ -9,12 +9,12 @@ namespace MTCGServer.Models
 {
     internal class Trade
     {
-        public string Id { get; set; }
-        public string CardToTrade { get; set; }
+        public Guid Id { get; set; }
+        public Guid CardToTrade { get; set; }
         public string Type { get; set; }
         public float MinDamage { get; set; }
 
-        public Trade (string id, string cardToTrade, string type, float minDamage, User player)
+        public Trade (Guid id, Guid cardToTrade, string type, float minDamage, User player)
         {
             Card? foundCard = null;
 

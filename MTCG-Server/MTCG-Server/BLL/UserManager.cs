@@ -1,5 +1,9 @@
-﻿using MTCGServer.DAL;
+﻿using MTCGServer.API.RouteCommands;
+using MTCGServer.BLL.Exceptions;
+using MTCGServer.DAL;
+using MTCGServer.DAL.Exceptions;
 using MTCGServer.Models;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,32 +21,97 @@ namespace MTCGServer.BLL
             _userDao = userDao;
         }
 
-        public User LoginUser(Credentials credentials)
+        public User? LoginUser(Credentials credentials)
         {
-            return _userDao.GetUserByCredentials(credentials.Username, credentials.Password) ?? throw new UserNotFoundException();
-        }
-
-        public void RegisterUser(Credentials credentials)
-        {
-            var user = new User(credentials);
-            if (_userDao.InsertUser(user) == false)
+            try
             {
-                throw new DuplicateUserException();
+                return _userDao.GetUserByCredentials(credentials.Username, credentials.Password);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw;
             }
         }
 
-        public User GetUserByAuthToken(string authToken)
+        public bool RegisterUser(Credentials credentials)
         {
-            return _userDao.GetUserByAuthToken(authToken) ?? throw new UserNotFoundException();
+            bool inserted = false;
+            try 
+            { 
+                var user = new User(credentials);
+                inserted = _userDao.InsertUser(user);
+            }
+            catch (Exception ex)
+            {
+                if(ex is DataAccessFailedException)
+                {
+                    throw new DataAccessException();
+                }
+                if (ex is PostgresException)
+                {
+                    throw new DuplicateDataException();
+                }
+            }
+            return inserted;
+        }
+
+        public User? GetUserByAuthToken(string authToken)
+        {
+            try
+            {
+                return _userDao.GetUserByAuthToken(authToken);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw new DataAccessException();
+            }
         }
 
         public UserData? GetUserData(string username)
         {
-            return _userDao.GetUserData(username);
+            try
+            {
+                return _userDao.GetUserData(username);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw new DataAccessException();
+            }
         }
         public string? GetTokenOfUsername(string username)
         {
-            return _userDao.GetToken(username);
+            try
+            {
+                return _userDao.GetToken(username);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw new DataAccessException();
+            }
+        }
+
+        public bool ExistUser(string username)
+        {
+            try
+            {
+                return _userDao.ExistUser(username);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw new DataAccessException();
+            }
+        }
+
+        public bool UpdateUserData(UserData userData, string username)
+        {
+            try
+            {
+                return _userDao.UpdateUserData(userData, username);
+            }
+            catch (DataAccessFailedException)
+            {
+                throw new DataAccessException();
+            }
         }
     }
 }

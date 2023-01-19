@@ -19,13 +19,20 @@ using MTCGServer.BLL;
 using MTCGServer.Core.Server;
 using MTCGServer.DAL;
 
-var userDao = new InMemoryUserDao();
+string connectionString = "Server=localhost;Port=10002;User Id=postgres;Password=123;Database=MTCGDB;";
+var database = new Database(connectionString);
+var userDao = database.UserDao;
+var packageDao = database.PackageDao;
+var cardDao = database.CardDao;
+
 var userManager = new UserManager(userDao);
+var packageManager = new PackageManager(packageDao);
+var cardsManager = new CardManager(cardDao);
 
 /*var messageDao = new InMemoryMessageDao();
 var messageManager = new MessageManager(messageDao);*/
 
-var router = new Router(userManager);
-var server = new HttpServer(IPAddress.Any, 10003, router);
+var router = new Router(userManager, packageManager, cardsManager);
+var server = new HttpServer(IPAddress.Any, 10001, router);
 
 server.Start();

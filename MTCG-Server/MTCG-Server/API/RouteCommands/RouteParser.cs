@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal class IdRouteParser : IRouteParser
+    internal class RouteParser : IRouteParser
     {
         public bool IsMatch(string resourcePath, string routePattern)
         {
@@ -12,7 +12,7 @@ namespace MTCGServer.API.RouteCommands
             
             switch (routePattern) 
             {
-                case "/users/{username}": return Regex.IsMatch(resourcePath, patternUsername);
+                case "/users/{username}": return Regex.IsMatch(resourcePath, patternUsername); //return true if the resource Path matches the pattern
                 case "/tadings/{id}":     return Regex.IsMatch(resourcePath, patternUsername);
 
                 default: throw new NotImplementedException();

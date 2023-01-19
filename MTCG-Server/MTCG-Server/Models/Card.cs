@@ -1,19 +1,32 @@
-﻿namespace MTCGServer.Models
-{
-    internal abstract class Card
-    {
-        public bool Fightable { get; set; }
-        public  ElementType Element { get; set; }
-        public CardType Name { get; set; }
-        public float Damage { get; set; }
-        public string Id { get; set; }
+﻿
 
-        protected Card(string id, string name, float damage)
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+namespace MTCGServer.Models
+{
+    internal class Card
+    {
+        [IgnoreDataMember]
+        public bool Fightable { get; set; }
+        [IgnoreDataMember]
+        public  ElementType Element { get; set; }
+
+        [IgnoreDataMember]
+        public CardType NameEnum  { get; set; }
+
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal Damage { get; set; }
+        
+
+        public Card(Guid id, string name, decimal damage)
         {
             Id = id;
-            Name = Enum.Parse<CardType> (name);
+            Name = name;
+            NameEnum = Enum.Parse<CardType> (name);
             Damage = damage;
-            Element = getElementOutOfName(Name);
+            Element = getElementOutOfName(NameEnum);
             Fightable = true;
 
         }

@@ -1,0 +1,86 @@
+//create cards
+CREATE TABLE IF NOT EXISTS public.cards
+(
+    cardid uuid NOT NULL,
+    fightable boolean NOT NULL,
+    element text COLLATE pg_catalog."default" NOT NULL,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    damage numeric NOT NULL,
+    owner text COLLATE pg_catalog."default",
+    CONSTRAINT cards_pkey PRIMARY KEY (cardid)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.cards
+    OWNER to postgres;
+
+============================
+create match_cards_to_package
+
+CREATE TABLE IF NOT EXISTS public.match_cards_to_package
+(
+    packageid bigint NOT NULL,
+    cardid uuid NOT NULL,
+    CONSTRAINT "matchCardsToPackage_pkey" PRIMARY KEY (cardid)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.match_cards_to_package
+    OWNER to postgres;
+
+===================
+create packages
+
+CREATE TABLE IF NOT EXISTS public.packages
+(
+    packageid bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    bought boolean NOT NULL,
+    CONSTRAINT packages_pkey PRIMARY KEY (packageid)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.packages
+    OWNER to postgres;
+
+==================
+create trades
+
+CREATE TABLE IF NOT EXISTS public.trades
+(
+    tradeid uuid NOT NULL,
+    username text COLLATE pg_catalog."default" NOT NULL,
+    cardid uuid NOT NULL,
+    mindamage smallint NOT NULL,
+    type text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT trades_pkey PRIMARY KEY (tradeid)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.trades
+    OWNER to postgres;
+
+======================
+create users
+CREATE TABLE IF NOT EXISTS public.users
+(
+    username text COLLATE pg_catalog."default" NOT NULL,
+    password text COLLATE pg_catalog."default" NOT NULL,
+    money integer NOT NULL,
+    name text COLLATE pg_catalog."default",
+    bio text COLLATE pg_catalog."default",
+    image text COLLATE pg_catalog."default",
+    win smallint NOT NULL,
+    loss smallint NOT NULL,
+    elo smallint NOT NULL,
+    token text COLLATE pg_catalog."default",
+    CONSTRAINT "Users_pkey" PRIMARY KEY (username)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.users
+    OWNER to postgres;

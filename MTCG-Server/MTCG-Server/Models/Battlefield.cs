@@ -73,21 +73,21 @@ namespace MTCGServer.Models
 
             //Bedigungen wo card1 gewinnt
             //Dragon vs Goblin || Wizzard vs Ork || WaterSpell vs Knight || Kraken vs spells || FireElve vs Dragon
-            if ( (card1.Name is CardType.Dragon && Array.Exists(goblins, goblin => goblin == card2.Name) )  ||
-                 (card1.Name is CardType.Wizzard && card2.Name is CardType.Ork)                             ||
-                 (card1.Name is CardType.WaterSpell && card2.Name is CardType.Knight)                       ||
-                 (card1.Name is CardType.Kraken && Array.Exists(spells, x => x == card2.Name)               ||
-                 (card1.Name is CardType.FireElf) && card2.Name is CardType.Dragon) )
+            if ( (card1.NameEnum is CardType.Dragon && Array.Exists(goblins, goblin => goblin == card2.NameEnum) )  ||
+                 (card1.NameEnum is CardType.Wizzard && card2.NameEnum is CardType.Ork)                             ||
+                 (card1.NameEnum is CardType.WaterSpell && card2.NameEnum is CardType.Knight)                       ||
+                 (card1.NameEnum is CardType.Kraken && Array.Exists(spells, x => x == card2.NameEnum)               ||
+                 (card1.NameEnum is CardType.FireElf) && card2.NameEnum is CardType.Dragon) )
             {
                 winCard = card1;
             }
             //Bedigungen wo card2 gewinnt
             //Goblin vs Dragon || Ork vs Wizzard || Knight vs WaterSpell || spells vs Kraken ||Dragon vs FireElve
-            else if ( (Array.Exists(goblins, goblin => goblin == card1.Name) && card2.Name is CardType.Dragon)  ||
-                      (card1.Name is CardType.Ork && card2.Name is CardType.Wizzard)                            ||
-                      (card1.Name is CardType.Knight && card2.Name is CardType.WaterSpell)                      ||
-                      (Array.Exists(spells, spell => spell == card1.Name) && card2.Name is CardType.Kraken)     ||
-                      (card1.Name is CardType.Dragon && card2.Name is CardType.FireElf))
+            else if ( (Array.Exists(goblins, goblin => goblin == card1.NameEnum) && card2.NameEnum is CardType.Dragon)  ||
+                      (card1.NameEnum is CardType.Ork && card2.NameEnum is CardType.Wizzard)                            ||
+                      (card1.NameEnum is CardType.Knight && card2.NameEnum is CardType.WaterSpell)                      ||
+                      (Array.Exists(spells, spell => spell == card1.NameEnum) && card2.NameEnum is CardType.Kraken)     ||
+                      (card1.NameEnum is CardType.Dragon && card2.NameEnum is CardType.FireElf))
             {
                 winCard = card2;
             }
@@ -128,8 +128,8 @@ namespace MTCGServer.Models
 
         public void elementInfluencedF(User player1, User player2, Card card1, Card card2)
         {
-            float damage1 = card1.Damage;
-            float damage2 = card2.Damage;
+            decimal damage1 = card1.Damage;
+            decimal damage2 = card2.Damage;
             //Bedingungen die card1 Damage verdoppeln und card2 Damage halbiert
             //Water vs Fire || Fire vs Normal || Normal vs Water
             if( (card1.Element is ElementType.Water) && (card2.Element is ElementType.Fire) ||

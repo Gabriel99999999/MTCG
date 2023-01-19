@@ -5,10 +5,11 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MTCGServer.BLL;
+using MTCGServer.BLL.Exceptions;
 using MTCGServer.Core.Response;
 using MTCGServer.Core.Routing;
 using MTCGServer.Models;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
@@ -16,33 +17,50 @@ namespace MTCGServer.API.RouteCommands.Users
     {
         private readonly IUserManager _userManager;
         private readonly User _user;
-        private readonly string _username;
+        private readonly string _usernameToGetData;
 
         public GetUserDataCommand(IUserManager userManager, User user, string username)
         {
             _userManager = userManager;
             _user = user;
-            _username = username;
+            _usernameToGetData = username;
         }
         public Response Execute()
         {
             var response = new Response();
             UserData? userdata = null;
-            if (_user.Credentials.Username == "admin" || _user.Token == _userManager.GetTokenOfUsername(_username))
+            //GetTokenOfUsername wirft AccessTokenMissingException wenn token = null ist
+            try
             {
-                userdata = _userManager.GetUserData(_user.Credentials.Username);
-                
+                if (_userManager.ExistUser(_usernameToGetData))
+                {
+                    if (_user.Credentials.Username == "admin" || _user.Token == _userManager.GetTokenOfUsername(_usernameToGetData))
+                    {
+                        userdata = _userManager.GetUserData(_user.Credentials.Username);
+                        if (userdata == null)
+                        {
+                            response.StatusCode = StatusCode.InternalServerError;
+                        }
+                        else
+                        {
+                            response.StatusCode = StatusCode.Ok;
+                            response.Payload = JsonConvert.SerializeObject(userdata);
+                        }
+                    }
+                    else
+                    {
+                        response.StatusCode = StatusCode.Unauthorized;
+                    }
+                }
+                else
+                {
+                    //User not found because not existing 
+                    response.StatusCode = StatusCode.NotFound;
+                }
             }
-
-            
-            if (userdata == null)
+            catch (DataAccessException)
             {
                 response.StatusCode = StatusCode.InternalServerError;
-            }
-            else
-            {
-                response.StatusCode = StatusCode.Ok;
-                response.Payload = JsonSerializer.Serialize(userdata);
             }
 
             return response;

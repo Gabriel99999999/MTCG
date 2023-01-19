@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MTCGServer.BLL
+namespace MTCGServer.BLL.Exceptions
 {
     [Serializable]
     public class UserNotFoundException : Exception
