@@ -8,21 +8,23 @@ namespace MTCGServer.Models
 {
     internal class ScoreboardData
     {
-        public int Win { get; private set; }
-        public int Loss { get; private set; }
-        public int Elo { get; private set; }
+        public string? Name { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int Elo { get; set; }
 
         public ScoreboardData()
         {
-            Win = 0;
-            Loss = 0;
+            Wins = 0;
+            Losses = 0;
             Elo = 100;
         }
-        public ScoreboardData(int win, int loss, int elo)
+        public ScoreboardData(string name, int win, int loss, int elo)
         {
-            Win = win;
-            Loss = loss;
+            Name = name;
             Elo = elo;
+            Wins = win;
+            Losses = loss;
         }
     }
 

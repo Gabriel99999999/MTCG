@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MTCGServer.Core.Routing;
 using MTCGServer.Core.Request;
+using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace MTCGServer.API.RouteCommands.Cards
 {
@@ -57,7 +59,7 @@ namespace MTCGServer.API.RouteCommands.Cards
                     }
                     else
                     {
-                        response.Payload = JsonConvert.SerializeObject(stack);
+                        response.Payload = JsonConvert.SerializeObject(stack, Formatting.Indented);
                     }
                 }
                 else

@@ -1,7 +1,7 @@
 ﻿using MTCGServer.Models;
 using Npgsql;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Users
 {
     internal interface IUserDao
     {

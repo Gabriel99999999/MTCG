@@ -5,16 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Game
 {
-    internal class MemoryPackageDao : IPackageDao
+    internal class MemoryGameDao : IGameDao
     {
-        public bool AddPackage(Package package)
+        /*public ScoreboardData? GetIndividuelScoreboardData(User user)
         {
             throw new NotImplementedException();
-        }
-
-        public List<Card>? BuyPackage(User user)
+        }*/
+        public List<ScoreboardData> GetScoreboard()
         {
             throw new NotImplementedException();
         }

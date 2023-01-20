@@ -44,7 +44,7 @@ namespace MTCGServer.API.RouteCommands.Users
                         else
                         {
                             response.StatusCode = StatusCode.Ok;
-                            response.Payload = JsonConvert.SerializeObject(userdata);
+                            response.Payload = JsonConvert.SerializeObject(userdata, Formatting.Indented);
                         }
                     }
                     else

@@ -1,7 +1,7 @@
 ﻿using MTCGServer.API.RouteCommands;
 using MTCGServer.BLL.Exceptions;
-using MTCGServer.DAL;
 using MTCGServer.DAL.Exceptions;
+using MTCGServer.DAL.Users;
 using MTCGServer.Models;
 using Npgsql;
 using System;

@@ -1,6 +1,6 @@
 ﻿using MTCGServer.BLL.Exceptions;
-using MTCGServer.DAL;
 using MTCGServer.DAL.Exceptions;
+using MTCGServer.DAL.Packages;
 using MTCGServer.Models;
 using Npgsql;
 

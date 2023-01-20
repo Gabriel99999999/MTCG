@@ -1,4 +1,8 @@
-﻿using MTCGServer.DAL.Exceptions;
+﻿using MTCGServer.DAL.Cards;
+using MTCGServer.DAL.Exceptions;
+using MTCGServer.DAL.Game;
+using MTCGServer.DAL.Packages;
+using MTCGServer.DAL.Users;
 using MTCGServer.Models;
 using Npgsql;
 using SWE1.MessageServer.DAL;
@@ -16,7 +20,8 @@ namespace MTCGServer.DAL
             element text COLLATE pg_catalog.""default"" NOT NULL,
             name text COLLATE pg_catalog.""default"" NOT NULL,
             damage numeric NOT NULL,
-            owner text COLLATE pg_catalog.""default"",
+            owner text COLLATE pg_catalog.""default"" NOT NULL,
+            deck boolean NOT NULL DEFAULT false,
             CONSTRAINT cards_pkey PRIMARY KEY (cardid)
         )
 
@@ -72,8 +77,8 @@ namespace MTCGServer.DAL
             name text COLLATE pg_catalog.""default"",
             bio text COLLATE pg_catalog.""default"",
             image text COLLATE pg_catalog.""default"",
-            win smallint NOT NULL,
-            loss smallint NOT NULL,
+            wins smallint NOT NULL,
+            losses smallint NOT NULL,
             elo smallint NOT NULL,
             token text COLLATE pg_catalog.""default"",
             CONSTRAINT ""Users_pkey"" PRIMARY KEY (username)
@@ -88,6 +93,7 @@ namespace MTCGServer.DAL
         public IUserDao UserDao { get; private set; }
         public IPackageDao PackageDao { get; private set; }
         public ICardDao CardDao { get; private set; }
+        public IGameDao GameDao { get; private set; }
 
         public Database(string connectionString)
         {
@@ -108,6 +114,7 @@ namespace MTCGServer.DAL
                 UserDao = new DatabaseUserDao(connectionString);
                 PackageDao = new DatabasePackageDao(connectionString);
                 CardDao = new DatabaseCardDao(connectionString);
+                GameDao = new DatabaseGameDao(connectionString);
             }
             catch (NpgsqlException e)
             {

@@ -10,6 +10,7 @@ using MTCGServer.API.RouteCommands.Packages;
 using System.Collections.Generic;
 using MTCGServer.API.RouteCommands.Cards;
 using MTCGServer.BLL.Exceptions;
+using MTCGServer.API.RouteCommands.Game;
 
 namespace MTCGServer.API.RouteCommands
 {
@@ -18,14 +19,16 @@ namespace MTCGServer.API.RouteCommands
         private readonly IUserManager _userManager;
         private readonly IPackageManager _packageManager;
         private readonly ICardManager _cardManager;
+        private readonly IGameManager _gameManager;
         private readonly IdentityProvider _identityProvider;
         private readonly IRouteParser _routeParser = new RouteParser();
 
-        public Router(IUserManager userManager, IPackageManager packageManager, ICardManager cardManager)
+        public Router(IUserManager userManager, IPackageManager packageManager, ICardManager cardManager, IGameManager gameManager)
         {
             _userManager = userManager;
             _packageManager = packageManager;
             _cardManager = cardManager;
+            _gameManager = gameManager;
 
             // better: define IIdentityProvider interface and get concrete implementation passed in as dependency
             _identityProvider = new IdentityProvider(userManager);
@@ -41,6 +44,7 @@ namespace MTCGServer.API.RouteCommands
                 //return mir ein dictionary und im falle das ich den user haben möchte schreibe ich getParameter(path,pattern)["username"]
                 var getParameter = (string path, string pattern) => (_routeParser.ParseParameters(path, pattern));
 
+                Console.WriteLine(request.ResourcePath);
                 ICommand? command = request switch
                 {
                     //All Methods for the user
@@ -55,11 +59,12 @@ namespace MTCGServer.API.RouteCommands
 
                     //All Methods for the cards
                     { Method: HttpMethod.Get, ResourcePath: "/cards"} => new GetStackCommand(_cardManager, identity(request)),
-                    { Method: HttpMethod.Get, ResourcePath: "/deck" } => new GetDeckCommand(_cardManager, identity(request), request),
+                    { Method: HttpMethod.Get, ResourcePath: var path} when isMatch(path, "/deck{query}")=> new GetDeckCommand(_cardManager, identity(request), request),
                     { Method: HttpMethod.Put, ResourcePath: "/deck"} => new ConfigureDeckCommand(_cardManager, identity(request), Deserialize<List<Guid>>(request.Payload)),
 
                     //All Methods for the game
-                    //{ Method: HttpMethod.Get, ResourcePath: "/stats"} => new GetStatsCommand(_gameManager, identity(request))),
+                    { Method: HttpMethod.Get, ResourcePath: "/stats"} => new GetStatsCommand(_gameManager, identity(request)),
+                    { Method: HttpMethod.Get, ResourcePath: "/score"} when (identity(request)!=null) => new GetScoreboardCommand(_gameManager),
                     // TODO: throw RouteNotAuthenticatedException for missing identity
                     // TODO: throw InvalidDataException for missing payload
 

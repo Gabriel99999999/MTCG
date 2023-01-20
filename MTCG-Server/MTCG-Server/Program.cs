@@ -24,15 +24,17 @@ var database = new Database(connectionString);
 var userDao = database.UserDao;
 var packageDao = database.PackageDao;
 var cardDao = database.CardDao;
+var gameDao = database.GameDao;
 
 var userManager = new UserManager(userDao);
 var packageManager = new PackageManager(packageDao);
 var cardsManager = new CardManager(cardDao);
+var gameManager = new GameManager(gameDao);
 
 /*var messageDao = new InMemoryMessageDao();
 var messageManager = new MessageManager(messageDao);*/
 
-var router = new Router(userManager, packageManager, cardsManager);
-var server = new HttpServer(IPAddress.Any, 10001, router);
+Router router = new Router(userManager, packageManager, cardsManager, gameManager);
+HttpServer server = new HttpServer(IPAddress.Any, 10001, router);
 
 server.Start();

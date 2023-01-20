@@ -14,11 +14,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Users
 {
     internal class DatabaseUserDao : DatabaseDao, IUserDao
     {
-        public DatabaseUserDao(string connectionString) : base(connectionString){ }
+        public DatabaseUserDao(string connectionString) : base(connectionString) { }
 
         public User? GetUserByAuthToken(string authToken)
         {
@@ -64,15 +64,15 @@ namespace MTCGServer.DAL
 
                     return user;
                 });
-            
-            
-            
+
+
+
                 if (user == null)
                 {
                     Console.WriteLine("Credentials were incorrect");
                     return user;
                 }
-            
+
                 return ExecuteWithDbConnection((connection) =>
                 {
 
@@ -105,7 +105,7 @@ namespace MTCGServer.DAL
                 inserted = ExecuteWithDbConnection((connection) =>
                 {
                     //these colums are not allowed to be null
-                    string query = "INSERT INTO users (username, password, money, name, bio, image, win, loss, elo, token) VALUES (@Username, @Password, @Money, @Name, @Bio, @Image, @Win, @Loss, @Elo, @token)";
+                    string query = "INSERT INTO users (username, password, money, name, bio, image, wins, losses, elo, token) VALUES (@Username, @Password, @Money, @Name, @Bio, @Image, @Wins, @Losses, @Elo, @token)";
                     using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("username", user.Credentials.Username);
                     cmd.Parameters.AddWithValue("password", user.Credentials.Password);
@@ -113,8 +113,8 @@ namespace MTCGServer.DAL
                     cmd.Parameters.AddWithValue("name", user.UserData.Name);
                     cmd.Parameters.AddWithValue("bio", user.UserData.Bio);
                     cmd.Parameters.AddWithValue("image", user.UserData.Image);
-                    cmd.Parameters.AddWithValue("win", user.ScoreboardData.Win);
-                    cmd.Parameters.AddWithValue("loss", user.ScoreboardData.Loss);
+                    cmd.Parameters.AddWithValue("wins", user.ScoreboardData.Wins);
+                    cmd.Parameters.AddWithValue("losses", user.ScoreboardData.Losses);
                     cmd.Parameters.AddWithValue("elo", user.ScoreboardData.Elo);
                     cmd.Parameters.AddWithValue("token", user.Token);
                     cmd.Prepare();
@@ -128,16 +128,16 @@ namespace MTCGServer.DAL
             }
             catch (Exception ex)
             {
-                if(ex is DataAccessFailedException)
+                if (ex is DataAccessFailedException)
                 {
                     throw;
                 }
-                    
+
                 else if (ex is PostgresException)
                 {
                     throw;
                 }
-                    
+
             }
 
             return inserted;
@@ -167,7 +167,7 @@ namespace MTCGServer.DAL
                 throw;
             }
         }
-  
+
         private User? createUser(NpgsqlDataReader reader)
         {
             User? user = null;
@@ -175,7 +175,7 @@ namespace MTCGServer.DAL
             {
                 Credentials credentials = new Credentials(reader.GetString("username"), reader.GetString("password"));
                 UserData userdata = new UserData(reader.GetString("name"), reader.GetString("bio"), reader.GetString("image"));
-                ScoreboardData scoreboardData = new ScoreboardData(reader.GetInt16("win"), reader.GetInt16("loss"), reader.GetInt16("elo"));
+                ScoreboardData scoreboardData = new ScoreboardData(reader.GetString("name"), reader.GetInt16("wins"), reader.GetInt16("losses"), reader.GetInt16("elo"));
                 user = new User(credentials, reader.GetInt16("money"), userdata, reader.GetString("token"), scoreboardData);
             }
             return user;
@@ -211,7 +211,7 @@ namespace MTCGServer.DAL
         public UserData? GetUserData(string username)
         {
             try
-            { 
+            {
                 return ExecuteWithDbConnection((connection) =>
                 {
                     UserData? userdata = null;
@@ -279,7 +279,7 @@ namespace MTCGServer.DAL
                     cmd.Parameters.AddWithValue("username", username);
                     cmd.Prepare();
 
-                    if(cmd.ExecuteNonQuery() == 1)
+                    if (cmd.ExecuteNonQuery() == 1)
                     {
                         dataUpdated = true;
                     }

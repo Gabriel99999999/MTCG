@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.BLL
 {
-    internal interface IPackageDao
+    internal interface IGameManager
     {
-        bool AddPackage(Package package);
-        List<Card>? BuyPackage(User user);
+        List<ScoreboardData> GetScoreboard();
     }
 }

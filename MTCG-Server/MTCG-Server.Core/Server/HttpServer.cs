@@ -27,65 +27,69 @@ namespace MTCGServer.Core.Server
             while (_listening)
             {
                 var connection = _listener.AcceptTcpClient();
-//ab hier den code in einem eigenen THREAD laufen lassen
-                
-                // create a new disposable handler for the client connection
-                var client = new HttpClient(connection);
+                //ab hier den code in einem eigenen THREAD laufen lassen
 
-                var request = client.ReceiveRequest();
-                Response.Response response = new Response.Response()
+
+                Thread thr = new Thread(() =>
                 {
-                    StatusCode = StatusCode.BadRequest
-                };
+                    // create a new disposable handler for the client connection
+                    var client = new HttpClient(connection);
 
-               
-                if(request != null)
-                {
-                    try
+                    var request = client.ReceiveRequest();
+                    Response.Response response = new Response.Response()
                     {
-                        var command = _router.Resolve(request);
-                        if (command != null)
-                        {
-                            Console.WriteLine("hier");
-                            // found a command for this request, now execute it
-                            response = command.Execute();
-                        }
-                        else
-                        {
-                            Console.WriteLine("hier2");
-                            // could not find a matching command for the request
-                        }
-                    }
-                    catch(Exception ex)
+                        StatusCode = StatusCode.BadRequest
+                    };
+
+                    //_router = new IRouter();
+                    if (request != null)
                     {
-                        if (ex is NotFoundException)
+                        try
                         {
-                            response.StatusCode = StatusCode.NotFound;
+                            var command = _router.Resolve(request);
+                            if (command != null)
+                            {
+                                Console.WriteLine("hier");
+                                // found a command for this request, now execute it
+                                response = command.Execute();
+                            }
+                            else
+                            {
+                                Console.WriteLine("hier2");
+                                // could not find a matching command for the request
+                            }
                         }
-                        else if(ex is InvalidOperationException)
+                        catch (Exception ex)
                         {
-                            response.StatusCode = StatusCode.InternalServerError;
-                        }
-                        else if (ex is RouteNotAuthenticatedException)
-                        {
-                            response.StatusCode = StatusCode.Unauthorized;
-                        }
-                        else if (ex is NotImplementedException)
-                        {
-                            response.StatusCode = StatusCode.NotImplemented;
-                        }
-                        else if (ex is InvalidDataException)
-                        {
-                            //response.StatusCode = StatusCode.BadRequest;
+                            if (ex is NotFoundException)
+                            {
+                                response.StatusCode = StatusCode.NotFound;
+                            }
+                            else if (ex is InvalidOperationException)
+                            {
+                                response.StatusCode = StatusCode.InternalServerError;
+                            }
+                            else if (ex is RouteNotAuthenticatedException)
+                            {
+                                response.StatusCode = StatusCode.Unauthorized;
+                            }
+                            else if (ex is NotImplementedException)
+                            {
+                                response.StatusCode = StatusCode.NotImplemented;
+                            }
+                            else if (ex is InvalidDataException)
+                            {
+                                //response.StatusCode = StatusCode.BadRequest;
+                            }
+
                         }
 
+                        // TODO: handle invalid data, route not authenticated
                     }
 
-                    // TODO: handle invalid data, route not authenticated
-                }
-
-                client.SendResponse(response);
-                client.Close();
+                    client.SendResponse(response);
+                    client.Close();
+                });
             }
         }
 

@@ -5,21 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Packages
 {
-    internal class MemoryCardDaocs : ICardDao
+    internal class MemoryPackageDao : IPackageDao
     {
-        public bool ConfigureDeck(User user, List<Guid> guids)
+        public bool AddPackage(Package package)
         {
             throw new NotImplementedException();
         }
 
-        public List<Card> GetDeck(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Card> GetStack(User user)
+        public List<Card>? BuyPackage(User user)
         {
             throw new NotImplementedException();
         }

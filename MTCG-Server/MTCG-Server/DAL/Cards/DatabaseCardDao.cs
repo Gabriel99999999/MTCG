@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Cards
 {
     internal class DatabaseCardDao : DatabaseDao, ICardDao
     {
@@ -22,6 +22,28 @@ namespace MTCGServer.DAL
             bool updatingWorks = true;
             try
             {
+                //remove old cards in deck 
+                updatingWorks = ExecuteWithDbConnection((connection) =>
+                {
+                    //Create the list of Cards the user buy 
+                    string query = "UPDATE cards SET deck = false WHERE owner = @username AND deck = true";
+                    using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("username", user.Credentials.Username);
+                    cmd.Prepare();
+                    
+                    if(cmd.ExecuteNonQuery() != -1)
+                    {
+                        return true;
+                    }
+                    return false;
+                    
+                });
+
+                if (!updatingWorks)
+                {
+                    throw new DataUpdateException();
+                }
+
                 foreach (Guid id in guids)
                 {
                     possibleToAdd = ExecuteWithDbConnection((connection) =>
@@ -56,7 +78,7 @@ namespace MTCGServer.DAL
                         using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
                         cmd.Parameters.AddWithValue("id", id);
                         cmd.Prepare();
-                        if(cmd.ExecuteNonQuery() != 1)
+                        if (cmd.ExecuteNonQuery() != 1)
                         {
                             return false;
                         }
@@ -69,11 +91,11 @@ namespace MTCGServer.DAL
                 }
                 return updatingWorks;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (ex is DataUpdateException) { throw; }
                 else if (ex is DataAccessFailedException) { throw; }
-                else if (ex is NpgsqlException){ throw; }
+                else if (ex is NpgsqlException) { throw; }
                 else { throw; }
             }
         }

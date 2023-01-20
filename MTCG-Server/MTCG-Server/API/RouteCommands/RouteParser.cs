@@ -9,11 +9,12 @@ namespace MTCGServer.API.RouteCommands
         {
             string patternUsername = "^" + routePattern.Replace("{username}", ".*").Replace("/", "\\/") + "(\\?.*)?$";
             string patternTradingId = "^" + routePattern.Replace("{id}", ".*").Replace("/", "\\/") + "(\\?.*)?$";
-            
+
             switch (routePattern) 
             {
                 case "/users/{username}": return Regex.IsMatch(resourcePath, patternUsername); //return true if the resource Path matches the pattern
-                case "/tadings/{id}":     return Regex.IsMatch(resourcePath, patternUsername);
+                case "/tadings/{id}":     return Regex.IsMatch(resourcePath, patternTradingId);
+                case "/deck{query}":      return (resourcePath == "/deck" || resourcePath == "/deck?format=plain" || resourcePath == "/deck?format=json");
 
                 default: throw new NotImplementedException();
             }

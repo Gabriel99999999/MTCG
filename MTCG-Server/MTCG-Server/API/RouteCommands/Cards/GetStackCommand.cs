@@ -28,7 +28,7 @@ namespace MTCGServer.API.RouteCommands.Cards
                 if (stack.Any())
                 {
                     response.StatusCode = StatusCode.Ok;
-                    response.Payload = JsonConvert.SerializeObject(stack);
+                    response.Payload = JsonConvert.SerializeObject(stack, Formatting.Indented);
                 }
                 else
                 {

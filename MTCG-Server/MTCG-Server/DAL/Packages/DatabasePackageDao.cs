@@ -12,11 +12,11 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTCGServer.DAL
+namespace MTCGServer.DAL.Packages
 {
     internal class DatabasePackageDao : DatabaseDao, IPackageDao
     {
-        public DatabasePackageDao(string connectionString) : base(connectionString){ }
+        public DatabasePackageDao(string connectionString) : base(connectionString) { }
 
         public bool AddPackage(Package package)
         {
@@ -37,7 +37,7 @@ namespace MTCGServer.DAL
 
                         if (reader.Read())
                         {
-                            return worksFine=false;
+                            return worksFine = false;
                         }
                     }
                     //insert the cards
@@ -50,7 +50,7 @@ namespace MTCGServer.DAL
                         cmd2.Parameters.AddWithValue("fightable", card.Fightable);
                         cmd2.Parameters.AddWithValue("element", card.Element.ToString());
                         cmd2.Parameters.AddWithValue("name", card.Name.ToString());
-                        cmd2.Parameters.AddWithValue("damage", card.Damage);                          
+                        cmd2.Parameters.AddWithValue("damage", card.Damage);
                         cmd2.Prepare();
                         if (cmd2.ExecuteNonQuery() != 1)
                         {
@@ -61,7 +61,7 @@ namespace MTCGServer.DAL
                 });
                 if (worksFine)
                 {
-                    
+
                     //add a new package id into the table package
                     worksFine = ExecuteWithDbConnection((connection1) =>
                     {
@@ -70,7 +70,7 @@ namespace MTCGServer.DAL
                         using NpgsqlCommand cmd = new NpgsqlCommand(query, connection1);
                         cmd.Parameters.AddWithValue("bought", false);
                         cmd.Prepare();
-                        
+
                         var result = cmd.ExecuteScalar();
                         indexOfNextPackage = Convert.ToInt32(result);
 
@@ -93,9 +93,9 @@ namespace MTCGServer.DAL
 
                 return worksFine;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                if(ex is DataAccessFailedException)
+                if (ex is DataAccessFailedException)
                 {
                     throw;
                 }
@@ -109,9 +109,9 @@ namespace MTCGServer.DAL
                     Console.WriteLine(ex.Message);
                     throw;
                 }
-                
+
             }
-            
+
         }
         public List<Card>? BuyPackage(User user)
         {
@@ -137,7 +137,7 @@ namespace MTCGServer.DAL
                     //update: the bougt value in packages, owner of the bought card, money of the user 
                     if (package.Any())
                     {
-                        if ((updateOwner(user) && updateMoney2(user) && updateBoughtValue()) )
+                        if (updateOwner(user) && updateMoney2(user) && updateBoughtValue())
                         {
                             return package;
                         }
@@ -148,15 +148,15 @@ namespace MTCGServer.DAL
                 {
                     throw new NotEnoughMoneyException();
                 }
-                
+
             }
             catch (Exception ex)
             {
-                if(ex is NotEnoughMoneyException)
+                if (ex is NotEnoughMoneyException)
                 {
-                    throw; 
+                    throw;
                 }
-                if(ex is DataAccessFailedException)
+                if (ex is DataAccessFailedException)
                 {
                     throw;
                 }
@@ -179,7 +179,7 @@ namespace MTCGServer.DAL
                     cmd4.Parameters.AddWithValue("money", currentMoney);
                     cmd4.Parameters.AddWithValue("username", user.Credentials.Username);
                     cmd4.Prepare();
-                    return (cmd4.ExecuteNonQuery() == 1);
+                    return cmd4.ExecuteNonQuery() == 1;
                 });
             }
             catch (DataAccessFailedException)
@@ -198,7 +198,7 @@ namespace MTCGServer.DAL
                     string changeOwner = "UPDATE cards SET owner = @username WHERE cardid = ANY (SELECT cardid FROM match_cards_to_package WHERE packageid = (SELECT MIN(packageid) FROM packages WHERE bought = false))";
                     using NpgsqlCommand cmd3 = new NpgsqlCommand(changeOwner, connection);
                     cmd3.Parameters.AddWithValue("username", user.Credentials.Username);
-                    return (cmd3.ExecuteNonQuery() == 5);
+                    return cmd3.ExecuteNonQuery() == 5;
                 });
             }
             catch (DataAccessFailedException)
@@ -215,7 +215,7 @@ namespace MTCGServer.DAL
                 {
                     string updateBoughtValue = "UPDATE packages SET bought = true WHERE packageid = (SELECT MIN(packageid) FROM packages WHERE bought = false)";
                     using NpgsqlCommand cmd2 = new NpgsqlCommand(updateBoughtValue, connection);
-                    return (cmd2.ExecuteNonQuery() == 1);
+                    return cmd2.ExecuteNonQuery() == 1;
                 });
             }
             catch (DataAccessFailedException)
