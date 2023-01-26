@@ -59,9 +59,14 @@ namespace MTCGServer.DAL.Trading
                     cmd.Parameters.AddWithValue("mindamage", trade.MinimumDamage);
                     cmd.Parameters.AddWithValue("type", trade.Type);
                     cmd.Prepare();
-                    cmd.ExecuteNonQuery();
+
+                    if(cmd.ExecuteNonQuery() != 1)
+                    {
+                        return false;
+                    }
                     
-                    return true; //Create new trade works correctly 
+                    bool updateWorks = UpdateFightable(trade.CardToTrade, false);
+                    return updateWorks; //Create new trade works correctly 
                 });
             }
             catch (Exception ex) 
@@ -73,6 +78,10 @@ namespace MTCGServer.DAL.Trading
                 else if (ex is PostgresException) //if tradeid already exist
                 {
                     throw;
+                }
+                else if (ex is DataUpdateException) 
+                { 
+                    throw; 
                 }
                 else
                 {
@@ -203,7 +212,7 @@ namespace MTCGServer.DAL.Trading
                 Guid cardIdFromTrade = GetCardId(tradeId);
                 if (cardIdFromTrade != Guid.Empty)
                 {
-                    if (UpdateFightable(cardIdFromTrade))
+                    if (UpdateFightable(cardIdFromTrade, true))
                     {
                         return ExecuteWithDbConnection((connection) =>
                         {
@@ -252,7 +261,7 @@ namespace MTCGServer.DAL.Trading
                     bool worksFine = checkOwnerOfCard(cardIdFromTrade, tradeCreater); //returns true if the owner of the card == the person who created the trade
                     if (worksFine)
                     {
-                        if (UpdateFightable(cardIdFromTrade))
+                        if (UpdateFightable(cardIdFromTrade, true))
                         {
                             return ExecuteWithDbConnection((connection) =>
                             {
@@ -351,15 +360,16 @@ namespace MTCGServer.DAL.Trading
             }
         }
 
-        private bool UpdateFightable(Guid cardId)
+        private bool UpdateFightable(Guid cardId, bool fightable)
         { 
             try
             {
                 return ExecuteWithDbConnection((connection) =>
                 {
                     //Create the list of Cards the user buy 
-                    string query = "UPDATE cards SET fightable = true WHERE cardid = @cardid";
+                    string query = "UPDATE cards SET fightable = @bool WHERE cardid = @cardid";
                     using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("bool", fightable);
                     cmd.Parameters.AddWithValue("cardid", cardId);
                     cmd.Prepare();
                     if (cmd.ExecuteNonQuery() == 1)

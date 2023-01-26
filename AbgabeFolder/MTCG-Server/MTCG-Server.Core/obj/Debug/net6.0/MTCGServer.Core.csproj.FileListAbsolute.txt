@@ -1,0 +1,12 @@
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\bin\Debug\net6.0\MTCGServer.Core.deps.json
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\bin\Debug\net6.0\MTCGServer.Core.dll
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\bin\Debug\net6.0\MTCGServer.Core.pdb
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.csproj.AssemblyReference.cache
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.AssemblyInfoInputs.cache
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.AssemblyInfo.cs
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.csproj.CoreCompileInputs.cache
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.dll
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\refint\MTCGServer.Core.dll
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\MTCGServer.Core.pdb
+C:\Users\wiede\Documents\Fachhochschule\3.Semester\Software Engineering\MonsterTradingCardGame\MTCG-Server\MTCG-Server.Core\obj\Debug\net6.0\ref\MTCGServer.Core.dll

@@ -41,6 +41,10 @@ namespace MTCGServer.API.RouteCommands.Trading
                 {
                     response.StatusCode = StatusCode.NotFound;
                 }
+                else if(ex is UpdateFailsException)
+                {
+                    response.StatusCode = StatusCode.InternalServerError;
+                }
                 else
                 {
                     Console.WriteLine(ex.Message);  

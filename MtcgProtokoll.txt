@@ -1,14 +1,14 @@
 Design:
 Prinzipiell besteht das Projekt aus 3 einzelnen Projekten. 
 1.MTCGServer:
-Dieses Projekt beinhaltet die 3 Layer des HTTP/REST-based server. Der API Layer ist dazu da ist auf die Requests vom Client 
+Dieses Projekt beinhaltet die 3 Layer des HTTP/REST-based server. Der API Layer ist dazu da um auf die Requests vom Client 
 mit einer passenden Response zu antworten in dem er je nach Request path einen bestimmten Command erstellt. Dieser wendet sich dann an 
 den zugehörigen Manager im Business Layer der eigentlich nur als Kommunikationsschnittstelle zwischen dem API Layer und dem Datenbank Layer 
 fungiert. Der Datenbank Layer kümmert sich hingegen darum die benötigten Daten aus der Datenbank zu selecten, updaten, inserten oder zu 
 deleten. 
 
 2.MTCGServer.Core
-Wie wichtigsten klassen dieses Projektes sind:
+Die wichtigsten klassen dieses Projektes sind:
 HttpClient – dieser Kümmert sich darum den Request vom Client zu empfangen und anschließend aufzudröseln um die für die weitere  Verarbeitung 
 wichtigen Daten in einem Request Objekt zu speichern. Ebenfalls beinhaltet diese Klasse die Funktionalität um dem Client das Response Objekt 
 zu senden.
@@ -102,4 +102,8 @@ Insgesamt: ca 100h
 24.01.2023 18:00-22:00 Treading Requests implementieren
 25.01.2023 18:00-07:00 Tests Implementieren + Special Feature
 26.01.2023 09:00-13:00 Protokoll schreiben
+
+
+Git Link:
+https://github.com/Gabriel99999999/MTCG.git
  

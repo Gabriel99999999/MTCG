@@ -37,6 +37,10 @@ namespace MTCGServer.BLL
                 {
                     throw new DuplicateDataException();
                 }
+                else if(ex is DataUpdateException)
+                {
+                    throw new UpdateFailsException();
+                }
                 else
                 {
                     Console.WriteLine(ex.Message);

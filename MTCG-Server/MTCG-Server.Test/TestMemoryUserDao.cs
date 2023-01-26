@@ -10,6 +10,7 @@ namespace MTCGServer.Test
 {
     public class TestMemoryUserDao
     {
+        //Insert of a user which did
         [Test]
         public void TestInsertNotExistingUserReturnsTrue()
         {
