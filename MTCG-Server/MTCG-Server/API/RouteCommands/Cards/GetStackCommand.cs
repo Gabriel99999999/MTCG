@@ -8,18 +8,17 @@ using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands.Cards
 {
-    internal class GetStackCommand : ICommand
+    public class GetStackCommand : AuthenticatedRouteCommand
     {
-        private ICardManager _cardManager;
-        private User _user;
+        private readonly ICardManager _cardManager;
 
-        public GetStackCommand(ICardManager cardManager, User user)
+        public GetStackCommand(ICardManager cardManager, User user) : base(user)
         {
             _cardManager = cardManager;
             _user = user;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response= new Response();
             try

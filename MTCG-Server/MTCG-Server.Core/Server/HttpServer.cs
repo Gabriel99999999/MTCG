@@ -2,6 +2,7 @@
 using MTCGServer.Core.Routing;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks.Dataflow;
 using HttpClient = MTCGServer.Core.Client.HttpClient;
 
 namespace MTCGServer.Core.Server
@@ -27,70 +28,71 @@ namespace MTCGServer.Core.Server
             while (_listening)
             {
                 var connection = _listener.AcceptTcpClient();
-                //ab hier den code in einem eigenen THREAD laufen lassen
 
-
-                Thread thr = new Thread(() =>
-                {
-                    // create a new disposable handler for the client connection
-                    var client = new HttpClient(connection);
-
-                    var request = client.ReceiveRequest();
-                    Response.Response response = new Response.Response()
-                    {
-                        StatusCode = StatusCode.BadRequest
-                    };
-
-                    //_router = new IRouter();
-                    if (request != null)
-                    {
-                        try
-                        {
-                            var command = _router.Resolve(request);
-                            if (command != null)
-                            {
-                                Console.WriteLine("hier");
-                                // found a command for this request, now execute it
-                                response = command.Execute();
-                            }
-                            else
-                            {
-                                Console.WriteLine("hier2");
-                                // could not find a matching command for the request
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex is NotFoundException)
-                            {
-                                response.StatusCode = StatusCode.NotFound;
-                            }
-                            else if (ex is InvalidOperationException)
-                            {
-                                response.StatusCode = StatusCode.InternalServerError;
-                            }
-                            else if (ex is RouteNotAuthenticatedException)
-                            {
-                                response.StatusCode = StatusCode.Unauthorized;
-                            }
-                            else if (ex is NotImplementedException)
-                            {
-                                response.StatusCode = StatusCode.NotImplemented;
-                            }
-                            else if (ex is InvalidDataException)
-                            {
-                                //response.StatusCode = StatusCode.BadRequest;
-                            }
-
-                        }
-
-                        // TODO: handle invalid data, route not authenticated
-                    }
-
-                    client.SendResponse(response);
-                    client.Close();
-                });
+                //in den () können parameter stehen und in {} steht die funktion selbst
+                ThreadStart myLamda = () => { HandleConnection(connection); };
+                Thread ConnectionHandler = new Thread(myLamda); //funktion handleConnection wird als funktion als parameter für den ThreadKonstruktor
+                ConnectionHandler.Start();
             }
+        }
+
+        private void HandleConnection(object obj)
+        {
+            var client = new HttpClient((TcpClient)obj);
+
+            var request = client.ReceiveRequest();
+            Response.Response response = new Response.Response()
+            {
+                StatusCode = StatusCode.BadRequest
+            };
+
+            if (request != null)
+            {
+                try
+                {
+                    var command = _router.Resolve(request);
+                    if (command != null)
+                    {
+                        // found a command for this request, now execute it
+                        response = command.Execute();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Im Switch existiert kein passender Command für den request");
+                        response = new Response.Response()
+                        {
+                            StatusCode = StatusCode.BadRequest
+                        };
+                        // could not find a matching command for the request
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is NotFoundException)
+                    {
+                        response.StatusCode = StatusCode.NotFound;
+                    }
+                    else if (ex is InvalidOperationException)
+                    {
+                        response.StatusCode = StatusCode.InternalServerError;
+                    }
+                    else if (ex is RouteNotAuthenticatedException)
+                    {
+                        response.StatusCode = StatusCode.Unauthorized;
+                    }
+                    else if (ex is NotImplementedException)
+                    {
+                        response.StatusCode = StatusCode.NotImplemented;
+                    }
+                    else if (ex is InvalidDataException)
+                    {
+                        response.StatusCode = StatusCode.BadRequest;
+                    }
+                }
+            }
+
+            client.SendResponse(response);
+            client.Close();
         }
 
         public void Stop()
@@ -98,5 +100,7 @@ namespace MTCGServer.Core.Server
             _listening = false;
             _listener.Stop();
         }
+
+       
     }
 }

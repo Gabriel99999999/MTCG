@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal interface IGameManager
+    public interface IGameManager
     {
         List<ScoreboardData> GetScoreboard();
+        bool UpdateElo(User user);
     }
 }

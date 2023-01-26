@@ -2,6 +2,7 @@
 using MTCGServer.DAL.Exceptions;
 using MTCGServer.DAL.Game;
 using MTCGServer.DAL.Packages;
+using MTCGServer.DAL.Trading;
 using MTCGServer.DAL.Users;
 using MTCGServer.Models;
 using Npgsql;
@@ -9,7 +10,7 @@ using SWE1.MessageServer.DAL;
 
 namespace MTCGServer.DAL
 {
-    internal class Database
+    public class Database
     {
         // see also https://www.postgresql.org/docs/current/ddl-constraints.html
         private const string CreateTablesCommand = @"
@@ -59,7 +60,7 @@ namespace MTCGServer.DAL
             tradeid uuid NOT NULL,
             username text COLLATE pg_catalog.""default"" NOT NULL,
             cardid uuid NOT NULL,
-            mindamage smallint NOT NULL,
+            mindamage numeric NOT NULL,
             type text COLLATE pg_catalog.""default"" NOT NULL,
             CONSTRAINT trades_pkey PRIMARY KEY (tradeid)
         )
@@ -95,6 +96,8 @@ namespace MTCGServer.DAL
         public ICardDao CardDao { get; private set; }
         public IGameDao GameDao { get; private set; }
 
+        public ITradingDao TradeDao { get; private set; }
+
         public Database(string connectionString)
         {
             try
@@ -115,6 +118,7 @@ namespace MTCGServer.DAL
                 PackageDao = new DatabasePackageDao(connectionString);
                 CardDao = new DatabaseCardDao(connectionString);
                 GameDao = new DatabaseGameDao(connectionString);
+                TradeDao = new DatabaseTradingDao(connectionString);
             }
             catch (NpgsqlException e)
             {

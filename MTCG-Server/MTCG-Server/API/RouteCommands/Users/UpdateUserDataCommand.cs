@@ -7,22 +7,20 @@ using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
-    internal class UpdateUserDataCommand : ICommand
+    public class UpdateUserDataCommand : AuthenticatedRouteCommand
     {
         private readonly IUserManager _userManager;
-        private readonly User _user;
         private readonly UserData _userData;
         private readonly string _usernameToUpdateData;
 
-        public UpdateUserDataCommand(IUserManager userManager, User user, UserData userData, string username)
+        public UpdateUserDataCommand(IUserManager userManager, User user, UserData userData, string username) : base(user) 
         {
             _userManager = userManager;
-            _user = user;
             _userData = userData;
             _usernameToUpdateData = username;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             var response = new Response();
             //GetTokenOfUsername wirft AccessTokenMissingException wenn token = null ist

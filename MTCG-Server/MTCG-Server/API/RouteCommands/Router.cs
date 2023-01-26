@@ -5,30 +5,34 @@ using MTCGServer.Core.Request;
 using MTCGServer.Core.Routing;
 using MTCGServer.Models;
 using HttpMethod = MTCGServer.Core.Request.HttpMethod;
-using Npgsql.Internal;
 using MTCGServer.API.RouteCommands.Packages;
-using System.Collections.Generic;
 using MTCGServer.API.RouteCommands.Cards;
 using MTCGServer.BLL.Exceptions;
 using MTCGServer.API.RouteCommands.Game;
+using MTCGServer.API.RouteCommands.Trading;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal class Router : IRouter
+    public class Router : IRouter
     {
         private readonly IUserManager _userManager;
         private readonly IPackageManager _packageManager;
         private readonly ICardManager _cardManager;
         private readonly IGameManager _gameManager;
+        private readonly ITradingManager _tradingManager;
+
         private readonly IdentityProvider _identityProvider;
         private readonly IRouteParser _routeParser = new RouteParser();
+        private Lobby _lobby;
 
-        public Router(IUserManager userManager, IPackageManager packageManager, ICardManager cardManager, IGameManager gameManager)
+        public Router(IUserManager userManager, IPackageManager packageManager, ICardManager cardManager, IGameManager gameManager, ITradingManager tradingManager, Lobby lobby)
         {
             _userManager = userManager;
             _packageManager = packageManager;
             _cardManager = cardManager;
             _gameManager = gameManager;
+            _tradingManager = tradingManager;
+            _lobby = lobby;
 
             // better: define IIdentityProvider interface and get concrete implementation passed in as dependency
             _identityProvider = new IdentityProvider(userManager);
@@ -44,7 +48,6 @@ namespace MTCGServer.API.RouteCommands
                 //return mir ein dictionary und im falle das ich den user haben möchte schreibe ich getParameter(path,pattern)["username"]
                 var getParameter = (string path, string pattern) => (_routeParser.ParseParameters(path, pattern));
 
-                Console.WriteLine(request.ResourcePath);
                 ICommand? command = request switch
                 {
                     //All Methods for the user
@@ -54,19 +57,26 @@ namespace MTCGServer.API.RouteCommands
                     { Method: HttpMethod.Put, ResourcePath: var path } when isMatch(path, "/users/{username}") => new UpdateUserDataCommand(_userManager, identity(request), Deserialize<UserData>(request.Payload), getParameter(path, "/users/{username}")["username"]),
 
                     //All Methods for the packages
-                    { Method: HttpMethod.Post, ResourcePath: "/packages"} => new CreatePackageCommand(_packageManager, Deserialize<List<Card>>(request.Payload), identity(request)), //if no token was set  => Response.StatusCode = 401 but if token is set and it exist => false user tries to create packages => Response.StatusCode = 403
+                    { Method: HttpMethod.Post, ResourcePath: "/packages" } => new CreatePackageCommand(_packageManager, Deserialize<List<Card>>(request.Payload), identity(request)), //if no token was set  => Response.StatusCode = 401 but if token is set and it exist => false user tries to create packages => Response.StatusCode = 403
+/*Special feature:*/{ Method: HttpMethod.Post, ResourcePath: "/automatedPackages" } => new CreateAutomaticPackagesCommand(_packageManager, identity(request), Deserialize<string>(request.Payload)),          
                     { Method: HttpMethod.Post, ResourcePath: "/transactions/packages" } => new AcquirePackageCommand(_packageManager, identity(request)),
 
                     //All Methods for the cards
-                    { Method: HttpMethod.Get, ResourcePath: "/cards"} => new GetStackCommand(_cardManager, identity(request)),
-                    { Method: HttpMethod.Get, ResourcePath: var path} when isMatch(path, "/deck{query}")=> new GetDeckCommand(_cardManager, identity(request), request),
-                    { Method: HttpMethod.Put, ResourcePath: "/deck"} => new ConfigureDeckCommand(_cardManager, identity(request), Deserialize<List<Guid>>(request.Payload)),
+                    { Method: HttpMethod.Get, ResourcePath: "/cards" } => new GetStackCommand(_cardManager, identity(request)),
+                    { Method: HttpMethod.Get, ResourcePath: var path } when isMatch(path, "/deck{query}") => new GetDeckCommand(_cardManager, identity(request), request),
+                    { Method: HttpMethod.Put, ResourcePath: "/deck" } => new ConfigureDeckCommand(_cardManager, identity(request), Deserialize<List<Guid>>(request.Payload)),
 
                     //All Methods for the game
-                    { Method: HttpMethod.Get, ResourcePath: "/stats"} => new GetStatsCommand(_gameManager, identity(request)),
-                    { Method: HttpMethod.Get, ResourcePath: "/score"} when (identity(request)!=null) => new GetScoreboardCommand(_gameManager),
-                    // TODO: throw RouteNotAuthenticatedException for missing identity
-                    // TODO: throw InvalidDataException for missing payload
+                    { Method: HttpMethod.Get, ResourcePath: "/stats" } => new GetStatsCommand(_gameManager, identity(request)),
+                    { Method: HttpMethod.Get, ResourcePath: "/score" } when (identity(request) != null) => new GetScoreboardCommand(_gameManager),
+                    { Method: HttpMethod.Post, ResourcePath: "/battles" } => new EnterLobyCommand(_gameManager, _cardManager, identity(request), _lobby),
+
+                    //All Methods for the trading
+                    { Method: HttpMethod.Get, ResourcePath: "/tradings" } => new GetTradesCommand(_tradingManager, identity(request)),
+                    { Method: HttpMethod.Post, ResourcePath: "/tradings" } => new CreateTradeCommand(_tradingManager, identity(request), Deserialize<Trade>(request.Payload)),
+                    { Method: HttpMethod.Delete, ResourcePath: var path } when isMatch(path, "/tradings/{id}") => new DeleteExistingTradeCommand(_tradingManager, identity(request), getParameter(path, "/tradings/{id}")["id"]),
+                    { Method: HttpMethod.Post, ResourcePath: var path } when isMatch(path, "/tradings/{id}") => new MakeTradeCommand(_tradingManager, identity(request), getParameter(path, "/tradings/{id}")["id"], Deserialize<string>(request.Payload)),
+
 
                     _ => null
 
@@ -76,9 +86,10 @@ namespace MTCGServer.API.RouteCommands
             }
             catch(Exception ex) 
             {
-                if (ex is UserNotFoundException) { throw new NotFoundException(); }
+                Console.WriteLine(ex.Message);
+                if (ex is DataNotFoundException) { throw new NotFoundException(); }
                 else if (ex is InvalidOperationException) { throw; }
-                else if (ex is RouteNotAuthenticatedException) { Console.WriteLine("StatusCode should be 401");  throw;  }
+                else if (ex is RouteNotAuthenticatedException) { throw;  }
                 else if (ex is NotImplementedException) { throw; }
                 else if (ex is InvalidDataException) { throw; }
                 else if (ex is JsonSerializationException) { throw new InvalidOperationException(); }
@@ -102,8 +113,10 @@ namespace MTCGServer.API.RouteCommands
             }
             catch (Exception ex)
             {
-                if(ex is InvalidDataException)
+                
+                if (ex is InvalidDataException)
                 {
+                    Console.WriteLine("hier");
                     throw;
                 }
                 if(ex is JsonSerializationException)

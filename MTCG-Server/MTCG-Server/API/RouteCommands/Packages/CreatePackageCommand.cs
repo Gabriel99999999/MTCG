@@ -12,21 +12,18 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.API.RouteCommands.Packages
 {
-    internal class CreatePackageCommand : ICommand
+    public class CreatePackageCommand : AuthenticatedRouteCommand
     {
         private readonly IPackageManager _packageManager;
         private readonly Package _package;
-        private readonly User _user;
 
-
-        public CreatePackageCommand(IPackageManager packageManager, List<Card> package, User user)
+        public CreatePackageCommand(IPackageManager packageManager, List<Card> package, User user) : base(user) 
         {
             _packageManager = packageManager;
             _package = new Package(package);
-            _user = user;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response= new Response();
             //if user != admin but token was set (false token)
@@ -35,6 +32,11 @@ namespace MTCGServer.API.RouteCommands.Packages
                 if (_user.Credentials.Username != "admin")
                 {
                     response.StatusCode = StatusCode.Forbidden;
+                }
+                else if(_package.PackageOfCards.Count() != 5)
+                {
+                    response.StatusCode= StatusCode.BadRequest;
+                    response.Payload = "The provided Package did not include the required amount of cards";
                 }
                 else
                 {

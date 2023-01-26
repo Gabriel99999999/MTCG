@@ -3,7 +3,7 @@
 namespace MTCGServer.Models
 {
     [Serializable]
-    internal class TradeNotPossibleException : Exception
+    public class TradeNotPossibleException : Exception
     {
         public TradeNotPossibleException()
         {

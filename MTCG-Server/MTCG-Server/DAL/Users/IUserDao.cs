@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace MTCGServer.DAL.Users
 {
-    internal interface IUserDao
+    public interface IUserDao
     {
         User? GetUserByAuthToken(string authToken);
         User? GetUserByCredentials(string username, string password);

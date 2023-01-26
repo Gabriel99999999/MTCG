@@ -1,0 +1,105 @@
+Design:
+Prinzipiell besteht das Projekt aus 3 einzelnen Projekten. 
+1.MTCGServer:
+Dieses Projekt beinhaltet die 3 Layer des HTTP/REST-based server. Der API Layer ist dazu da ist auf die Requests vom Client 
+mit einer passenden Response zu antworten in dem er je nach Request path einen bestimmten Command erstellt. Dieser wendet sich dann an 
+den zugehörigen Manager im Business Layer der eigentlich nur als Kommunikationsschnittstelle zwischen dem API Layer und dem Datenbank Layer 
+fungiert. Der Datenbank Layer kümmert sich hingegen darum die benötigten Daten aus der Datenbank zu selecten, updaten, inserten oder zu 
+deleten. 
+
+2.MTCGServer.Core
+Wie wichtigsten klassen dieses Projektes sind:
+HttpClient – dieser Kümmert sich darum den Request vom Client zu empfangen und anschließend aufzudröseln um die für die weitere  Verarbeitung 
+wichtigen Daten in einem Request Objekt zu speichern. Ebenfalls beinhaltet diese Klasse die Funktionalität um dem Client das Response Objekt 
+zu senden.
+Der HttpServer hingegen akzeptiert TCP Verbindungen und arbeitet die darüber erhaltenen Anfragen in jeweils einem Thread für jeden Client 
+der sich mit dem Server verbindet ab. 
+
+3.MTCGServer.Test
+In diesem Projekt befinden sich nur die Unit Tests zu meinem Projekt.
+
+
+
+Was ich während dem Projekt gelernt habe:
+Dieses Projekt war für mich die erste Gelegenheit einen HTTP/REST-based server zu programmieren. Außerdem war es für mich eine neue Erfahrung 
+PostgreSQL in einer Programmiersprache zu verwenden. Bis zu diesem Zeitpunkt habe ich Datenbank Anbindungen nur beim Website programmieren 
+verwendet. Ich wusste ehrlich gesagt nicht einmal, dass man in C# eine Datenbank Verbindung aufbauen kann. 
+
+Besonders prägende Erfahrungen die ich bei diesem Projekt machen konnte waren:
+• Wieder einmal ist mir bewusst geworden wie wichtig es beim Software entwickeln ist, dass man genau arbeitet und im Optimalfall sich bereits 
+bevor man beginnt eine grobe Struktur überlegt. 
+
+• Aufgrund der Tatsache, dass ich Anfangs etwas ungeduldig war und aber auch noch nicht wirklich verstanden hatte was die Projektangabe von 
+uns fordert, habe ich einfach mal drauf los programmiert und später habe ich dann gemerkt das vieles davon unnötiger Code war bzw. sich die 
+Objekte nicht dafür eigenen die Requests vom Client entgegen zu nehmen.
+ 
+• Außerdem würde ich bei meinem nächsten Projekt sehr gerne ausprobieren wie das Test Driven programmieren funktioniert. Ich könnte mir gut 
+vorstellen das mir die Fehlersuche manchmal erleichtert hätte. Man muss aber auch sagen das ich persönlich erst sehr spät verstanden habe was 
+die eigentliche Aufgabe ist, da ich davor noch keine Erfahrungen mit APIs hatte. Anfangs dachte ich, dass dies wieder eine Konsolen Applikation 
+werden würde und habe anhand von der Anleitung auf Moodle angefangen. Später habe ich bemerkt, dass es viel besser ist gleich mit dem Swagger 
+nebenbei offen, Stück für Stück die einzelnen Requests und die Logik dafür zu implementieren. 
+
+• Ein weitere Erfahrung, war dass aufteilen in den API-Layer, Business Logic Layer und Datenbank Layer. Aber es hat durchaus gedauert bis ich 
+dieses Modell verstanden habe. 
+
+
+
+Unit Test Design:
+Für mich persönlich war dieses Projekt die erste „richtige“ Unit Test Erfahrung weshalb ich auch wirklich Lange gebraucht habe um das 
+Mocken zu verstehen. 
+
+Am besten hat das Testen von der BattleLogic funktioniert, weil ich diese Art von Tests noch vom letzten Semester gekannt habe. 
+Man gibt Parameter in eine Funktion und kann dessen Output kontrollieren. 
+Hingegen habe ich mir bei den gemockten Tests schwerer getan um das Prinzip dahinter zu verstehen. Hauptsächlich habe ich dann mit der Hilfe 
+von Mocking die einzelnen Responses von den verschiedenen Commands (Bsp Register Command) getestet. Dafür habe ich den Manager gemockt und 
+die einzelnen Rückgabewerte der Funktionen vom Manager simulieren. Dadurch konnte ich testen ob mir der jeweilige Command auch das richtige 
+Response Objekt erstellt. 
+Die Klassen wie zum Beispiel MemoryUserDao habe ich bei manches Tests dafür verwendet die Daten am Memory Speicher zu simulieren und zu 
+kontrollieren ob die Werte returned werden die ich mir erwarte. 
+
+
+
+Special Feature:
+Mein Special Feature ist ein eigener Request path der dem admin das erstellen von Packages erleichtert in dem der Admin im Body vom Request 
+die Anzahl an Packages angibt (min 1/max 10) und mein Server tut dann per Zufall die geforderten Packages erstellen und sie in die Datenbank 
+integrieren. Ich fand dies ein nützliches Feature weil ich persönlich die Arbeit vom Package erstellen als eher langweilig betrachte und es 
+gibt dem Spiel eine tolle Zufalls Komponente. Die Karten die sich in einem Package befinden sind nach wie vor die selben 
+Typen (Goblin, Dragon, FireSpell,…) die per Zufall erstellt werden aber der Damage Wert wird nun zufällig zwischen 1 und 100 liegen.
+
+
+
+Datenbank:
+Für die Datenbank habe ich ein Docker File erstellt. Dieses erstellt mir die Datenbank und mein Server kreirrt für diese die einzelnen Tabellen
+die benötigt werden.
+
+
+Zeit:
+Insgesamt: ca 100h
+28.11.2022 hab ich 3h am UmlDiagramm gearbeitet und probiert mir grob zu überlegen wie ich die Anforderungen am besten umsetzen kann
+3.12.2022 4h angefangen zu programmieren und uml Diagram bissi abgeändert
+4.12.2022 5h battle logik und die Karten
+5.12.2022 7:30 - 10:00 battle logik fast fertig
+17.12.2022 8:40 - 9:30 Code so anpassen das es er mit diesen Parametern funktioniert die auch dann an den Server übergeben werden
+17.12.2022 9:30 - 12:00 komplettes Projekt neue erstellen und alte Code teile hinzufügen weil ich daran gescheitert bin neue Projekte zu meinem bestehenden Projekt hinzuzufügen
+17.12.2022 12:00 - 16:00 hab ich am Trading und dem Store gearbeitet
+17.12.2022 16:00 - 18:00 habe ich mir den Massager Server aus der Präsenseinheit angeschaut
+19.12.2022 9:00-12:00 Trading fast fertig und store fast fertig 
+19.12.2022 12:00-18:00 worked on the server to register a user 
+20.12.2022 9:00-12:00 und 13:00-16:00 und 16:00-19:30 logik um den user einzuloggen und zu registrieren mit Datenbank anbindung fertig 
+22.12.2022 8:00-12:00 arbeitete ich an den anderen User funktionen 
+23.12.2022 00:00 - 6:00 die anderen User funktionen fertig gestellt JETZT FEHLT nur noch PUT Users
+17.01.2023 9:00 - 13:00 PutUserData fertiggestellt
+17.01.2023 21:00 - 24:00 an den Requests für die Packakes arbeiten
+18.01.2023 00:00-4:40 an den Requests für die Packakes arbeiten
+18.01.2023 23:00-24:00 an den Requests für die Packakes arbeiten
+19.01.2023 00:00-5:00 an den Requests für die Cards arbeiten
+19.01.2023 14:00-15:00 an den Requests für die Cards arbeiten
+19.01.2023 20:00-24:00 an den Requests für die Cards arbeiten
+20.01.2023 00:00-03:00 fehler bei GetDeck in plain format beheben
+20.01.2023 10:00-13:00 Threading im HttpServer implementieren
+20.01.2023 20:00-24:00 Requests in der Kategorie Game implementieren
+21.01.2023 00:00-04:00 Treading Requests implementieren
+24.01.2023 18:00-22:00 Treading Requests implementieren
+25.01.2023 18:00-07:00 Tests Implementieren + Special Feature
+26.01.2023 09:00-13:00 Protokoll schreiben
+ 

@@ -3,7 +3,7 @@
 namespace MTCGServer.DAL.Exceptions
 {
     [Serializable]
-    internal class DataAccessFailedException : Exception
+    public class DataAccessFailedException : Exception
     {
         public DataAccessFailedException()
         {

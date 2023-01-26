@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Users
 {
-    internal class DatabaseUserDao : DatabaseDao, IUserDao
+    public class DatabaseUserDao : DatabaseDao, IUserDao
     {
         public DatabaseUserDao(string connectionString) : base(connectionString) { }
 
@@ -69,14 +69,11 @@ namespace MTCGServer.DAL.Users
 
                 if (user == null)
                 {
-                    Console.WriteLine("Credentials were incorrect");
                     return user;
                 }
 
                 return ExecuteWithDbConnection((connection) =>
-                {
-
-                    Console.WriteLine("Credentials were correct");
+                { 
                     user.Token = $"{username}-mtcgToken";
 
                     //insert Token into database

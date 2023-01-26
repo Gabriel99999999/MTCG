@@ -1,9 +1,10 @@
 ﻿using System.Data;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal class RouteParser : IRouteParser
+    public class RouteParser : IRouteParser
     {
         public bool IsMatch(string resourcePath, string routePattern)
         {
@@ -12,11 +13,10 @@ namespace MTCGServer.API.RouteCommands
 
             switch (routePattern) 
             {
-                case "/users/{username}": return Regex.IsMatch(resourcePath, patternUsername); //return true if the resource Path matches the pattern
-                case "/tadings/{id}":     return Regex.IsMatch(resourcePath, patternTradingId);
-                case "/deck{query}":      return (resourcePath == "/deck" || resourcePath == "/deck?format=plain" || resourcePath == "/deck?format=json");
-
-                default: throw new NotImplementedException();
+                case "/users/{username}":               return Regex.IsMatch(resourcePath, patternUsername); //return true if the resource Path matches the pattern
+                case "/tradings/{id}":                  return Regex.IsMatch(resourcePath, patternTradingId);
+                case "/deck{query}":                    return (resourcePath == "/deck" || resourcePath == "/deck?format=plain" || resourcePath == "/deck?format=json");
+                default:                                throw new NotImplementedException();
             }
             
         }

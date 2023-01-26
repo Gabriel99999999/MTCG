@@ -12,18 +12,16 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.API.RouteCommands.Packages
 {
-    internal class AcquirePackageCommand : ICommand
+    public class AcquirePackageCommand : AuthenticatedRouteCommand
     {
         private IPackageManager _packageManager;
-        private User _user;
 
-        public AcquirePackageCommand(IPackageManager packageManager, User user)
+        public AcquirePackageCommand(IPackageManager packageManager, User user) : base(user) 
         {
             _packageManager = packageManager;
-            _user = user;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response = new Response();
             try

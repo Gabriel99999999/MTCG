@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Users
 {
-    internal class MemoryUserDao : IUserDao
+    public class MemoryUserDao : IUserDao
     {
         private readonly List<User> _users = new();
 
@@ -28,11 +28,17 @@ namespace MTCGServer.DAL.Users
 
         public User? GetUserByCredentials(string username, string password)
         {
-            return _users.SingleOrDefault(u => u.Credentials.Username == username && u.Credentials.Password == password);
+            User? user = null;
+            //GetUser
+            user = _users.SingleOrDefault(u => u.Credentials.Username == username && u.Credentials.Password == password);
+            //Add Token
+            _users.SingleOrDefault(u => u.Credentials.Username == username && u.Credentials.Password == password).Token = $"{username}-mtcgToken";
+            return user;
         }
 
-        public bool InsertUser(User user)
+        public bool RegisterUser(User user)
         {
+            Console.WriteLine("bin im MemoryUserDao");
             var inserted = false;
 
             if (GetUserByUsername(user.Credentials.Username) == null)
@@ -56,7 +62,7 @@ namespace MTCGServer.DAL.Users
             return false;
         }
 
-        string? IUserDao.GetToken(string username)
+        public string? GetToken(string username)
         {
             string? token = null;
             User? user = _users.SingleOrDefault(u => u.Credentials.Username.Equals(username));
@@ -69,31 +75,28 @@ namespace MTCGServer.DAL.Users
             return token;
         }
 
-        User? IUserDao.GetUserByAuthToken(string authToken)
-        {
-            return _users.SingleOrDefault(u => u.Token == authToken);
-        }
-
-        User? IUserDao.GetUserByCredentials(string username, string password)
-        {
-            return _users.SingleOrDefault(u => u.Credentials.Username == username && u.Credentials.Password == password);
-        }
-
         private User? GetUserByUsername(string username)
         {
             return _users.SingleOrDefault(u => u.Credentials.Username == username);
         }
 
-        UserData? IUserDao.GetUserData(string username)
+        public UserData? GetUserData(string username)
         {
             User? user = _users.SingleOrDefault(u => u.Credentials.Username == username);
             return user != null ? user.UserData : null;
         }
 
-        bool IUserDao.InsertUser(User user)
+        public bool InsertUser(User user)
         {
-            _users.Add(user);
-            return true;
+            bool inserted = false;
+
+            if (GetUserByUsername(user.Credentials.Username) == null)
+            {
+                _users.Add(user);
+                inserted = true;
+            }
+
+            return inserted;
         }
     }
 }

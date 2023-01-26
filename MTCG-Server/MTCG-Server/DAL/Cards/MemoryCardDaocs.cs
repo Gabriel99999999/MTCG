@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Cards
 {
-    internal class MemoryCardDaocs : ICardDao
+    public class MemoryCardDaocs : ICardDao
     {
+        //private readonly Dictionary<User,Guid> _listOfDecks = new();
+
         public bool ConfigureDeck(User user, List<Guid> guids)
         {
             throw new NotImplementedException();

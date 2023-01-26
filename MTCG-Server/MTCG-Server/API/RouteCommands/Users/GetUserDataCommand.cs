@@ -13,19 +13,17 @@ using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
-    internal class GetUserDataCommand : ICommand
+    public class GetUserDataCommand : AuthenticatedRouteCommand
     {
         private readonly IUserManager _userManager;
-        private readonly User _user;
         private readonly string _usernameToGetData;
 
-        public GetUserDataCommand(IUserManager userManager, User user, string username)
+        public GetUserDataCommand(IUserManager userManager, User user, string username) : base(user)
         {
             _userManager = userManager;
-            _user = user;
             _usernameToGetData = username;
         }
-        public Response Execute()
+        public override Response Execute()
         {
             var response = new Response();
             UserData? userdata = null;

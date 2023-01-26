@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal class GameManager : IGameManager
+    public class GameManager : IGameManager
     {
         private readonly IGameDao _gameDao;
         public GameManager(IGameDao gameDao)
@@ -34,6 +34,19 @@ namespace MTCGServer.BLL
                 {
                     throw;
                 }
+            }
+        }
+
+        public bool UpdateElo(User user)
+        {
+            try
+            {
+                return _gameDao.UpdateElo(user);
+            }
+            catch (Exception ex)
+            {
+                if (ex is DataAccessFailedException) { throw new DataAccessException(); }
+                else { throw; }
             }
         }
 

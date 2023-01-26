@@ -7,7 +7,7 @@ using MTCGServer.Models;
 
 namespace MTCGServer.API.RouteCommands.Users
 {
-    internal class RegisterCommand : ICommand
+    public class RegisterCommand : ICommand
     {
         private readonly Credentials _credentials;
         private readonly IUserManager _userManager;

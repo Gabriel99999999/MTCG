@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class Package
+    public class Package
     {
         public List<Card> PackageOfCards { get; set; }
         public int Price { get; }

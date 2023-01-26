@@ -7,45 +7,19 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class Trade
+    public class Trade
     {
         public Guid Id { get; set; }
         public Guid CardToTrade { get; set; }
         public string Type { get; set; }
-        public float MinDamage { get; set; }
+        public decimal MinimumDamage { get; set; }
 
-        public Trade (Guid id, Guid cardToTrade, string type, float minDamage, User player)
+        public Trade (Guid id, Guid cardToTrade, string type, decimal minDamage)
         {
-            Card? foundCard = null;
-
-            if(player.Stack is null)
-            {
-                throw new TradeNotPossibleException();
-            }
-            //nach karte suchen
-            foundCard = player.Stack.FirstOrDefault(x => x.Id == id);
-
-            if(foundCard is null)
-            {
-                throw new TradeNotPossibleException();
-                //user does not have this card ErrCode 403
-            }
-            else
-            {
-                if(foundCard.Fightable is false)
-                {
-                    throw new TradeNotPossibleException();
-                }
-
-                Id = id;
-                CardToTrade = cardToTrade;
-                Type = type;
-                MinDamage = minDamage;
-
-                //block foundcard to be added to the Stack
-                foundCard.Fightable = false;
-            }
-            
+            Id = id;
+            CardToTrade = cardToTrade;
+            Type = type;
+            MinimumDamage = minDamage;   
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal class UserManager : IUserManager
+    public class UserManager : IUserManager
     {
         private readonly IUserDao _userDao;
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Cards
 {
-    internal class DatabaseCardDao : DatabaseDao, ICardDao
+    public class DatabaseCardDao : DatabaseDao, ICardDao
     {
         public DatabaseCardDao(string connectionString) : base(connectionString) { }
 
@@ -22,44 +22,27 @@ namespace MTCGServer.DAL.Cards
             bool updatingWorks = true;
             try
             {
-                //remove old cards in deck 
-                updatingWorks = ExecuteWithDbConnection((connection) =>
-                {
-                    //Create the list of Cards the user buy 
-                    string query = "UPDATE cards SET deck = false WHERE owner = @username AND deck = true";
-                    using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("username", user.Credentials.Username);
-                    cmd.Prepare();
-                    
-                    if(cmd.ExecuteNonQuery() != -1)
-                    {
-                        return true;
-                    }
-                    return false;
-                    
-                });
-
-                if (!updatingWorks)
-                {
-                    throw new DataUpdateException();
-                }
-
+                //check if min one card is in a current trade
                 foreach (Guid id in guids)
                 {
                     possibleToAdd = ExecuteWithDbConnection((connection) =>
                     {
-                        //Create the list of Cards the user buy 
-                        string query = "SELECT cardid FROM cards WHERE owner = @username AND cardid = @id";
+                        string query = "SELECT fightable FROM cards WHERE owner = @username AND cardid = @id";
                         using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
                         cmd.Parameters.AddWithValue("username", user.Credentials.Username);
                         cmd.Parameters.AddWithValue("id", id);
                         cmd.Prepare();
                         using NpgsqlDataReader reader = cmd.ExecuteReader();
-                        if (!reader.Read())
+                        if (reader.Read())
                         {
-                            return false;
+                            if (reader.GetBoolean("fightable"))
+                            {
+                                return true;
+                            }
                         }
-                        return true; ;
+                        //fightable = false => card is part of a current trade 
+                        //OR card does not exist OR user is not the owner
+                        return false;
                     });
                     //if owner does not own one id  its not possible to configure the deck
                     if (!possibleToAdd)
@@ -68,7 +51,28 @@ namespace MTCGServer.DAL.Cards
                     }
                 }
 
-                //Configuring deck is possible => set bool deck = true
+                //remove old cards in deck 
+                updatingWorks = ExecuteWithDbConnection((connection) =>
+                {
+                    string query = "UPDATE cards SET deck = false WHERE owner = @username AND deck = true";
+                    using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("username", user.Credentials.Username);
+                    cmd.Prepare();
+
+                    if (cmd.ExecuteNonQuery() != -1)
+                    {
+                        return true;
+                    }
+                    return false;
+
+                });
+
+                if (!updatingWorks)
+                {
+                    throw new DataUpdateException();
+                }
+
+                //Configuring deck is possible => set bool d = true
                 foreach (Guid id in guids)
                 {
                     updatingWorks = ExecuteWithDbConnection((connection) =>
@@ -102,6 +106,7 @@ namespace MTCGServer.DAL.Cards
 
         public List<Card> GetDeck(User user)
         {
+            string[] spells = { "WaterSpell", "FireSpell", "RegularSpell" };
             List<Card> stack = new List<Card>();
             try
             {
@@ -115,7 +120,14 @@ namespace MTCGServer.DAL.Cards
                     using NpgsqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        stack.Add(new Card(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        if(Array.Exists(spells, spell => spell == reader.GetString("name")))
+                        {
+                            stack.Add(new SpellCard(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        }
+                        else
+                        {
+                            stack.Add(new MonsterCard(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        }
                     }
                     return stack;
                 });
@@ -128,6 +140,7 @@ namespace MTCGServer.DAL.Cards
 
         public List<Card> GetStack(User user)
         {
+            string[] spells = { "WaterSpell", "FireSpell", "RegularSpell" };
             List<Card> stack = new List<Card>();
             try
             {
@@ -141,7 +154,14 @@ namespace MTCGServer.DAL.Cards
                     using NpgsqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        stack.Add(new Card(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        if (Array.Exists(spells, spell => spell == reader.GetString("name")))
+                        {
+                            stack.Add(new SpellCard(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        }
+                        else
+                        {
+                            stack.Add(new MonsterCard(reader.GetGuid("cardid"), reader.GetString("name"), reader.GetDecimal("damage")));
+                        }
                     }
                     return stack;
                 });

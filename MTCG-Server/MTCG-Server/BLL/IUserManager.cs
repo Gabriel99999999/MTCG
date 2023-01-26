@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal interface IUserManager
+    public interface IUserManager
     {
         User? LoginUser(Credentials credentials);
         bool RegisterUser(Credentials credentials);

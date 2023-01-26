@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class ScoreboardData
+    public class ScoreboardData
     {
         public string? Name { get; set; }
         public int Wins { get; set; }

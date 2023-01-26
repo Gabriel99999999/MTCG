@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Packages
 {
-    internal class DatabasePackageDao : DatabaseDao, IPackageDao
+    public class DatabasePackageDao : DatabaseDao, IPackageDao
     {
         public DatabasePackageDao(string connectionString) : base(connectionString) { }
 
@@ -61,7 +61,6 @@ namespace MTCGServer.DAL.Packages
                 });
                 if (worksFine)
                 {
-
                     //add a new package id into the table package
                     worksFine = ExecuteWithDbConnection((connection1) =>
                     {
@@ -99,7 +98,7 @@ namespace MTCGServer.DAL.Packages
                 {
                     throw;
                 }
-                if (ex is PostgresException)
+                else if (ex is PostgresException)
                 {
                     Console.WriteLine(ex.Message);
                     throw;

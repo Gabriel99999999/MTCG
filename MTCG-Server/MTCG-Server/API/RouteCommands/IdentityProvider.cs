@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal class IdentityProvider : IIdentityProvider
+    public class IdentityProvider : IIdentityProvider
     {
         private readonly IUserManager _userManager;
 
@@ -33,7 +33,6 @@ namespace MTCGServer.API.RouteCommands
                     currentUser = _userManager.GetUserByAuthToken(authToken.Substring(prefix.Length));
                 }
             }
-
             return currentUser;
         }
     }

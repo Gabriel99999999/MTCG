@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal interface IPackageManager
-    {
+    public interface IPackageManager
+    {   
         bool AddPackage(Package package);
         List<Card>? BuyPackage(User user);
     }

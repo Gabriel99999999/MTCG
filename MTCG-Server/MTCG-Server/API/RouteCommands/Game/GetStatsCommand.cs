@@ -8,18 +8,16 @@ using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands.Game
 {
-    internal class GetStatsCommand : ICommand
+    public class GetStatsCommand : AuthenticatedRouteCommand
     {
         private IGameManager _gameManager;
-        private User _user;
 
-        public GetStatsCommand(IGameManager gameManager, User user)
+        public GetStatsCommand(IGameManager gameManager, User user) : base(user)
         {
             _gameManager = gameManager;
-            _user = user;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response= new Response();
 

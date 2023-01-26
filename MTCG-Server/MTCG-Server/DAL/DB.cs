@@ -8,7 +8,7 @@ using Npgsql;
 
 namespace MTCGServer.DAL
 {
-    internal class DB : IDB
+    public class DB : IDB
     {
         NpgsqlConnection GetConnection()
         {

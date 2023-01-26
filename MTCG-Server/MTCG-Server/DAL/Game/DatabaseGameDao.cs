@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Game
 {
-    internal class DatabaseGameDao : DatabaseDao, IGameDao
+    public class DatabaseGameDao : DatabaseDao, IGameDao
     {
         public DatabaseGameDao(string connectionString) : base(connectionString) { }
 
@@ -31,9 +31,43 @@ namespace MTCGServer.DAL.Game
                     while(reader.Read())
                     {
                         //bereits sortiert
-                        scoreboard.Add(new ScoreboardData(reader.GetString("name"), reader.GetInt16("elo"), reader.GetInt16("wins"), reader.GetInt16("losses")));
+                        scoreboard.Add(new ScoreboardData(reader.GetString("name"), reader.GetInt16("wins"), reader.GetInt16("losses"), reader.GetInt16("elo")));
                     }
                     return scoreboard;
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex is DataAccessFailedException)
+                {
+                    throw;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        public bool UpdateElo(User user)
+        {
+            try
+            {
+                return ExecuteWithDbConnection((connection) =>
+                {
+                    string query = "UPDATE users SET elo = @elo, wins = @wins, losses = @losses WHERE username = @username";
+                    using NpgsqlCommand cmd = new NpgsqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("elo", user.ScoreboardData.Elo);
+                    cmd.Parameters.AddWithValue("wins", user.ScoreboardData.Wins);
+                    cmd.Parameters.AddWithValue("losses", user.ScoreboardData.Losses);
+                    cmd.Parameters.AddWithValue("username", user.Credentials.Username);
+                    cmd.Prepare();
+                    
+                    if(cmd.ExecuteNonQuery() != 1)
+                    {
+                        return false;
+                    }
+                    return true;
                 });
             }
             catch (Exception ex)

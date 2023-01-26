@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL
 {
     [Serializable]
-    internal class UpdateFailsException : Exception
+    public class UpdateFailsException : Exception
     {
         public UpdateFailsException()
         {

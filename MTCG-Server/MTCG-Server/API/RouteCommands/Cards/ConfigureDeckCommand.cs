@@ -9,23 +9,21 @@ using Npgsql;
 
 namespace MTCGServer.API.RouteCommands.Cards
 {
-    internal class ConfigureDeckCommand : ICommand
+    public class ConfigureDeckCommand : AuthenticatedRouteCommand
     {
-        private ICardManager _cardManager;
-        private User _user;
-        private List<Guid> _guids;
+        private readonly ICardManager _cardManager;
+        private readonly List<Guid> _guids;
 
-        public ConfigureDeckCommand(ICardManager cardManager, User user, List<Guid> guids)
+        public ConfigureDeckCommand(ICardManager cardManager, User user, List<Guid> guids) : base(user)
         {
             _cardManager = cardManager;
-            _user = user;
             _guids = guids;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response = new Response();
-            if(_guids.Count != 4) 
+            if(_guids.Count != 4 || _guids.Distinct().Count() != _guids.Count) 
             { 
                 response.StatusCode = StatusCode.BadRequest;
             }
@@ -40,6 +38,7 @@ namespace MTCGServer.API.RouteCommands.Cards
                     }
                     else
                     {
+                        //at least one oft the provided cards does not belong to the user or is not available for example is part of a current trade
                         response.StatusCode = StatusCode.Forbidden;
                     }
                 }

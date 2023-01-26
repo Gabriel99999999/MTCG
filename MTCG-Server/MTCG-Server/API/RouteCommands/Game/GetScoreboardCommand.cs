@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal class GetScoreboardCommand : ICommand
+    public class GetScoreboardCommand : ICommand
     {
         private IGameManager _gameManager;
 

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Game
 {
-    internal interface IGameDao
+    public interface IGameDao
     {
         //ScoreboardData? GetIndividuelScoreboardData(User user);
         List<ScoreboardData> GetScoreboard();
+        bool UpdateElo(User user);
     }
 }

@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL.Exceptions
 {
     [Serializable]
-    internal class DataAccessException : Exception
+    public class DataAccessException : Exception
     {
         public DataAccessException()
         {

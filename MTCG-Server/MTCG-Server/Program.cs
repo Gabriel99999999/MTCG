@@ -1,6 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using MTCGServer.Models;
-
 using System.Linq.Expressions;
 
 /*Console.WriteLine("Hello, World!");
@@ -19,22 +17,22 @@ using MTCGServer.BLL;
 using MTCGServer.Core.Server;
 using MTCGServer.DAL;
 
-string connectionString = "Server=localhost;Port=10002;User Id=postgres;Password=123;Database=MTCGDB;";
+string connectionString = "Server=localhost;Port=10002;User Id=postgres;Password=123;Database=MTCGServer;";
 var database = new Database(connectionString);
 var userDao = database.UserDao;
 var packageDao = database.PackageDao;
 var cardDao = database.CardDao;
 var gameDao = database.GameDao;
+var tradeDao = database.TradeDao;
 
 var userManager = new UserManager(userDao);
 var packageManager = new PackageManager(packageDao);
 var cardsManager = new CardManager(cardDao);
 var gameManager = new GameManager(gameDao);
+var tradingManager = new TradingManager(tradeDao);
 
-/*var messageDao = new InMemoryMessageDao();
-var messageManager = new MessageManager(messageDao);*/
-
-Router router = new Router(userManager, packageManager, cardsManager, gameManager);
+Lobby lobby = new Lobby();
+Router router = new Router(userManager, packageManager, cardsManager, gameManager, tradingManager, lobby);
 HttpServer server = new HttpServer(IPAddress.Any, 10001, router);
 
 server.Start();

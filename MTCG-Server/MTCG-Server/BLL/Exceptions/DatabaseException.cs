@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL
 {
     [Serializable]
-    internal class DatabaseException : Exception
+    public class DatabaseException : Exception
     {
         public DatabaseException()
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Cards
 {
-    internal interface ICardDao
+    public interface ICardDao
     {
         bool ConfigureDeck(User user, List<Guid> guids);
         List<Card> GetDeck(User user);

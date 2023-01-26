@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace MTCGServer.Models
 {
-    internal class Card
+    public class Card
     {
         [IgnoreDataMember]
         public bool Fightable { get; set; }

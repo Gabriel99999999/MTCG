@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class Store
+    public class Store
     {
-        private List<Trade>? _currentTrades;
-        private List<Package>? _currentPackages;
+        private List<Trade> _currentTrades;
+        private List<Package> _currentPackages;
 
         public Store()
         {
-            _currentPackages = null;
-            _currentTrades = null;
+            _currentPackages = new List<Package>();
+            _currentTrades = new List<Trade>();
         }
         public void listTrades()
         {
@@ -29,7 +29,7 @@ namespace MTCGServer.Models
             {
                 int count = 1;
                 foreach (Trade trade in _currentTrades){
-                    Console.WriteLine($"Trade {count}:\nTrade Id: {trade.Id}\nCard Id: {trade.Id}\n wanted Card type: {trade.Type}\nminimum Damage: {trade.MinDamage} ");
+                    Console.WriteLine($"Trade {count}:\nTrade Id: {trade.Id}\nCard Id: {trade.Id}\n wanted Card type: {trade.Type}\nminimum Damage: {trade.MinimumDamage} ");
                     count++;
                 }
                 //return 200;

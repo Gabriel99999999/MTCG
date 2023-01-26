@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal class CardManager : ICardManager
+    public class CardManager : ICardManager
     {
         private readonly ICardDao _cardDao;
 

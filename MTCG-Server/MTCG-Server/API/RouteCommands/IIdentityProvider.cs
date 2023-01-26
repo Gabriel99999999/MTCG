@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal interface IIdentityProvider
+    public interface IIdentityProvider
     {       
         public User? GetIdentityForRequest(Request request);
     }

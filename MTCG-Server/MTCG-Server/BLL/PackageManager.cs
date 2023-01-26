@@ -6,7 +6,7 @@ using Npgsql;
 
 namespace MTCGServer.BLL
 {
-    internal class PackageManager : IPackageManager
+    public class PackageManager : IPackageManager
     {
         private readonly IPackageDao _packageDao;
         public PackageManager(IPackageDao packageDao) 

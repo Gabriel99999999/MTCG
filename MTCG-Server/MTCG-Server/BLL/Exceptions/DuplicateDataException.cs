@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL.Exceptions
 {
     [Serializable]
-    internal class DuplicateDataException : Exception
+    public class DuplicateDataException : Exception
     {
         public DuplicateDataException()
         {

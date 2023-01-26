@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class SimpleCard
+    public class SimpleCard
     {
         public string Name;
         public string Damage;

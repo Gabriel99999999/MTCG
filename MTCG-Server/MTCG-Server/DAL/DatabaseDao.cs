@@ -3,7 +3,7 @@ using Npgsql;
 
 namespace SWE1.MessageServer.DAL
 {
-    internal abstract class DatabaseDao
+    public abstract class DatabaseDao
     {
         private readonly string _connectionString;
 

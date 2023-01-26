@@ -3,7 +3,7 @@
 namespace MTCGServer.DAL.Exceptions
 {
     [Serializable]
-    internal class NotEnoughMoneyException : Exception
+    public class NotEnoughMoneyException : Exception
     {
         public NotEnoughMoneyException()
         {

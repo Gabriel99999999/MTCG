@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL.Exceptions
 {
     [Serializable]
-    internal class InvalidUsernameOrPasswordException : Exception
+    public class InvalidUsernameOrPasswordException : Exception
     {
         public InvalidUsernameOrPasswordException()
         {

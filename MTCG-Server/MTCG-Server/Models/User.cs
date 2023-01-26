@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.Models
 {
-    internal class User
+    public class User
     {
         public Credentials Credentials { get; set; }
         public int Money { get; }

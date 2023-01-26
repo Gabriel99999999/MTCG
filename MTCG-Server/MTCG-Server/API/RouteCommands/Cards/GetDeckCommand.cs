@@ -15,16 +15,14 @@ using Formatting = Newtonsoft.Json.Formatting;
 
 namespace MTCGServer.API.RouteCommands.Cards
 {
-    internal class GetDeckCommand : ICommand
+    public class GetDeckCommand : AuthenticatedRouteCommand
     {
-        private ICardManager _cardManager;
-        private User _user;
-        private bool _formatPlain;
+        private readonly ICardManager _cardManager;
+        private readonly bool _formatPlain;
 
-        public GetDeckCommand(ICardManager cardManager, User user, Request request)
+        public GetDeckCommand(ICardManager cardManager, User user, Request request) : base(user)
         {
             _cardManager = cardManager;
-            _user = user;
             _formatPlain = GetFormatOutOfRequest(request);
         }
 
@@ -38,7 +36,7 @@ namespace MTCGServer.API.RouteCommands.Cards
             return false;
         }
 
-        public Response Execute()
+        public override Response Execute()
         {
             Response response = new Response();
             try

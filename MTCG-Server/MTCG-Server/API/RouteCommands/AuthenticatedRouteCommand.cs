@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.API.RouteCommands
 {
-    internal abstract class AuthenticatedRouteCommand : ICommand
+    public abstract class AuthenticatedRouteCommand : ICommand
     {
-        public User Identity { get; private set; }
+        protected User _user;
 
         public AuthenticatedRouteCommand(User identity)
         {
-            Identity = identity;
+            _user = identity;
         }
 
         public abstract Response Execute();

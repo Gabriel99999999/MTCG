@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Packages
 {
-    internal class MemoryPackageDao : IPackageDao
+    public class MemoryPackageDao : IPackageDao
     {
         public bool AddPackage(Package package)
         {

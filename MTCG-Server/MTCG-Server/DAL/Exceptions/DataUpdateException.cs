@@ -3,7 +3,7 @@
 namespace MTCGServer.DAL
 {
     [Serializable]
-    internal class DataUpdateException : Exception
+    public class DataUpdateException : Exception
     {
         public DataUpdateException()
         {

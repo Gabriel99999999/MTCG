@@ -3,7 +3,7 @@
 namespace MTCGServer.BLL.Exceptions
 {
     [Serializable]
-    internal class TooLessMoneyException : Exception
+    public class TooLessMoneyException : Exception
     {
         public TooLessMoneyException()
         {

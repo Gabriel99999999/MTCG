@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.BLL
 {
-    internal interface ICardManager
+    public interface ICardManager
     {
         List<Card> GetStack(User user);
         List<Card> GetDeck(User user);

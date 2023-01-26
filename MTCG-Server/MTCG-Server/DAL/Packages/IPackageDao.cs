@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTCGServer.DAL.Packages
 {
-    internal interface IPackageDao
+    public interface IPackageDao
     {
         bool AddPackage(Package package);
         List<Card>? BuyPackage(User user);
